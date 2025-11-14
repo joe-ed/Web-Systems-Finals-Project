@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../ASSETS/Admin_Page.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">AdminLogo</a>
+  <div class="user-menu">
+    <button id="userBtn"><i class='bx bx-user-circle'></i> Admin</button>
+  </div>
+</header>
+
+<div class="sidebar">
+  <a href="#"><i class='bx bx-home'></i> Dashboard</a>
+  <a href="#"><i class='bx bx-user'></i> Users</a>
+  <a href="#"><i class='bx bx-bar-chart'></i> Reports</a>
+  <a href="#"><i class='bx bx-cog'></i> Settings</a>
+</div>
+
+<div class="main">
+  <div class="card">
+    <h3>Total Users</h3>
+    <p>1200</p>
+    <button class="btn" id="addUserBtn">Add User</button>
+  </div>
+  <div class="card">
+    <h3>Reports</h3>
+    <p>Monthly Activity</p>
+    <button class="btn">View</button>
+  </div>
+  <div class="card">
+    <h3>Settings</h3>
+    <p>Configure System</p>
+    <button class="btn">Edit</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="userModal">
+  <button type="button" class="X"><i class='bx bx-x'></i></button>
+  <div class="form-box">
+    <h2>Add User</h2>
+    <form>
+      <div class="user">
+        <input type="text" name="IDnumber" placeholder="ID Number" required>
+        <i class='bx bx-id-card'></i>
+      </div>
+      <div class="user">
+        <input type="email" name="email" placeholder="Email" required>
+        <i class='bx bx-envelope'></i>
+      </div>
+      <div class="user">
+        <input typ
