@@ -163,7 +163,7 @@ class Controller{
         $stmt->bind_param("ssssss", $full_name, $email, $role, $course, $year, $section);
 
         if($stmt->execute()){
-            $location = "../Admin_page.html?success=1"; // go up from BACKEND folder
+            $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php?success=1";
             header("Location: $location");
             exit();
         }else{
