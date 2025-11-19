@@ -26,7 +26,7 @@ class Controller{
             define('DB_NAME', 'test');
         }
         //the actual connection
-        $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, 3308);
+        $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306);
 
         if($connection->connect_error){
             die("Connection Failed" .$connection->connect_error);
@@ -158,13 +158,13 @@ class Controller{
 
         //connection and adding
         //INSERT STATEMENT FORM SQL
-        $sql="INSERT INTO users (full_name, email, userRole, course, schoolYear, section ) VALUES(?, ?, ?, ?, ?, ?)";
+        $sql="INSERT INTO users (full_name, email, role, course, year, section ) VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("ssssss", $full_name, $email, $role, $course, $year, $section);
 
         if($stmt->execute()){
-            $LOCATION = "/System/Web-Systems-Finals-Project/Admin_page.html";
-            header("Location:$LOCATION?success=1");
+            $location = "../Admin_page.html?success=1"; // go up from BACKEND folder
+            header("Location: $location");
             exit();
         }else{
             echo "Error!";
