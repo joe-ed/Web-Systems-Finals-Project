@@ -133,6 +133,7 @@
             </div>
 
             <!-- Users Table -->
+
             <div class="table-container">
                 <table id="usersTable">
                     <thead>
@@ -151,6 +152,7 @@
                     </tbody>
                 </table>
             </div>
+            
 
             <!-- Add New User Button -->
             <div class="add-user-button-container">
@@ -201,6 +203,7 @@
 
     <!-- ================= MODALS ================= -->
     <!-- Add New User Modal -->
+<form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=create" method="post" id="createUser">
     <div class="modal" id="addUserModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -218,7 +221,7 @@
                 <input type="email" name="email" id="newUserEmail" required>
 
                 <label for="newUserRole">Role</label>
-                <select name="role" id="newUserRole" required>
+                <select name="userRole" id="newUserRole" required>
                     <option value="" disabled selected>Select Role</option>
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
@@ -233,7 +236,7 @@
                         <option value="BSDC">BSDC</option>
                         <option value="BLIS">BLIS</option>
                     </select>
-                    <select name="year" id="newUserYear" required>
+                    <select name="schoolYear" id="newUserYear" required>
                         <option value="" disabled selected>Year</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -252,6 +255,7 @@
             </div>
         </div>
     </div>
+</form>
 
     <!-- Change Password Modal -->
     <div class="modal" id="changePasswordModal">

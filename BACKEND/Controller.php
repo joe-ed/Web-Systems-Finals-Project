@@ -11,7 +11,7 @@ class Controller{
     public function create_connection(){
         // Server name , User , password, database name
         if(!defined('DB_HOST')){
-            define('DB_HOST', 'localhost');
+            define('DB_HOST', '127.0.0.1');
         }
 
         if(!defined('DB_USER')){
@@ -26,7 +26,7 @@ class Controller{
             define('DB_NAME', 'test');
         }
         //the actual connection
-        $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, 3308);
 
         if($connection->connect_error){
             die("Connection Failed" .$connection->connect_error);
@@ -147,18 +147,23 @@ class Controller{
     }
 
     public function create(){
-        $first_name = $_POST['first_name'];
-        $middle_name = $_POST['middle_name'];
-        $last_name = $_POST['last_name'];
+
+        $full_name = $_POST['fullName'];
+        $email = $_POST['email'];
+        $role = $_POST['userRole'];
+        $course = $_POST['course'];
+        $year = $_POST['schoolYear'];
+        $section = $_POST['section'];
+        
 
         //connection and adding
         //INSERT STATEMENT FORM SQL
-        $sql="INSERT INTO users (last_name, first_name, middle_name) VALUES(?, ?, ?)";
+        $sql="INSERT INTO users (full_name, email, userRole, course, schoolYear, section ) VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bind_param("sss", $last_name, $first_name, $middle_name);
+        $stmt->bind_param("ssssss", $full_name, $email, $role, $course, $year, $section);
 
         if($stmt->execute()){
-            $LOCATION = "/System/FrontEnd/homepage.php";
+            $LOCATION = "/System/Web-Systems-Finals-Project/Admin_page.html";
             header("Location:$LOCATION?success=1");
             exit();
         }else{
@@ -173,6 +178,6 @@ $controller  = new Controller();
 $controller->actionreader();
 
 
-
+//kasano ag php potang ina 
 
 ?>
