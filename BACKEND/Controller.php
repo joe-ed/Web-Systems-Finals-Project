@@ -79,7 +79,7 @@ class Controller{
                 $stmt->bind_param("sssi", $new_first_name, $new_middle_name, $new_last_name, $id);
 
                 if($stmt->execute()){
-                    $location = "/System/FrontEnd/homepage.php";
+                    $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php";
                     header("Location:$location");
                     exit();
                 }
@@ -102,7 +102,7 @@ class Controller{
         }
         
         $id = $_GET['id'];
-        $location = "/System/BackEnd/Update_Page.php?id=" . urlencode($id);
+        $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php?id=" . urlencode($id);
         header("Location:$location");
         exit();
     }
@@ -139,7 +139,7 @@ class Controller{
          $stmt ->bind_param("i", $id);
 
          if($stmt->execute()){
-            $LOCATION = "/System/FrontEnd/homepage.php";
+            $LOCATION = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php";
             header("Location:$LOCATION");
             exit();
          }
@@ -155,9 +155,6 @@ class Controller{
         $year = $_POST['schoolYear'];
         $section = $_POST['section'];
         
-
-        //connection and adding
-        //INSERT STATEMENT FORM SQL
         $sql="INSERT INTO users (full_name, email, role, course, year, section ) VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("ssssss", $full_name, $email, $role, $course, $year, $section);

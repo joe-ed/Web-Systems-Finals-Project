@@ -163,11 +163,16 @@ include("../BACKEND/Controller.php");
                             <td><?=htmlspecialchars($user['full_name'])?></td>
                             <td><?=htmlspecialchars($user['email'])?></td>
                             <td><?=htmlspecialchars($user['role'])?></td>
-                            <td><?=htmlspecialchars($user['course'] . ' / ' . $user['year'] . ' / ' . $user['section'])?></td>
+                            <td><?=htmlspecialchars($user['course'] . ' ' . $user['year'] . '-' . $user['section'])?></td>
                             <td><?=htmlspecialchars($user['status'])?></td>
                             <td>
-                                <button class="edit-user-btn" data-user-id="<?=htmlspecialchars($user['id'])?>">Edit</button>
-                                <button class="delete-user-btn" data-user-id="<?=htmlspecialchars($user['id'])?>">Delete</button>
+                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=edit" method="get" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?=htmlspecialchars($user['id'])?>">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=delete" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?=htmlspecialchars($user['id'])?>">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
                             </td>
                         </tr>
                         <?php

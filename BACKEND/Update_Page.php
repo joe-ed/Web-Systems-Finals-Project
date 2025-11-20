@@ -1,11 +1,11 @@
 <?php
 if(!isset($_GET['id'])) {
-    header("Location: /System/FrontEnd/homepage.php");
+    header("Location: /System/FROTEND/page.php");
     exit();
 }
 $id = $_GET['id'];
 
-include "Controller.php";
+include "../BACKEND/Controller.php";
 
 $controller = new Controller();
 $user_get = $controller->take_info_by_id($id);
