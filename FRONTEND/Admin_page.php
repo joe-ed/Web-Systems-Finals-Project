@@ -166,13 +166,15 @@ include("../BACKEND/Controller.php");
                             <td><?=htmlspecialchars($user['course'] . ' ' . $user['year'] . '-' . $user['section'])?></td>
                             <td><?=htmlspecialchars($user['status'])?></td>
                             <td>
-                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=edit" method="get" style="display:inline;">
+                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=edit" method="post" style="display:inline;">
                                     <input type="hidden" name="id" value="<?=htmlspecialchars($user['id'])?>">
-                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                    <a href="/System/Web-Systems-Finals-Project/BACKEND/Update_page.php?id=<?= htmlspecialchars($user['id']) ?>" class="btn btn-primary">Edit</a>
+
                                 </form>
                                 <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=delete" method="post" style="display:inline;">
                                     <input type="hidden" name="id" value="<?=htmlspecialchars($user['id'])?>">
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                                    </form>
                             </td>
                         </tr>
                         <?php

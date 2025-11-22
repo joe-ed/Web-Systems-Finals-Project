@@ -66,17 +66,19 @@ class Controller{
 
     public function update(){
         $id = $_POST['id'];
-        $new_first_name = $_POST['new_first_name'];
-        $new_middle_name = $_POST['new_middle_name'];
-        $new_last_name = $_POST['new_last_name'];
+        $updatedFullName = $_POST['newFullName'];
+        $updatedEmail = $_POST['newEmail'];
+        $updatedRole = $_POST['newRole'];
+        $updatedCourse = $_POST['newCourse'];
+        $updatedYear = $_POST['newYear'];
 
         //if our id is not null
         if($id){
-            $sql = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ? WHERE id = ?";
+            $sql = "UPDATE users SET full_name = ?, email = ?, role = ?, course = ?, year = ?, section = ? WHERE id = ?";
             $stmt = $this->connection->prepare($sql);
 
             if($stmt){
-                $stmt->bind_param("sssi", $new_first_name, $new_middle_name, $new_last_name, $id);
+                $stmt->bind_param("sssssi", $updatedFullName, $updatedEmail, $updatedRole, $updatedCourse, $updatedYear, $id);
 
                 if($stmt->execute()){
                     $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php";
@@ -127,10 +129,10 @@ class Controller{
     }
 
     public function delete(){
-        $id = $_GET['id'];
+        $id = $_POST['id'];
         echo $id;
 
-        $id = intval($_GET['id']);
+        $id = intval($_POST['id']);
 
         $sql = "DELETE FROM users WHERE id = ?";
         $stmt = $this->connection->prepare($sql);
@@ -146,6 +148,19 @@ class Controller{
         } 
     }
 
+    //anti-dupe func
+    public function dupeEmail($email) {
+        
+        $sql = "SELECT id FROM users WHERE email = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+    
+        return $result->num_rows > 0;
+    }
+    
     public function create(){
 
         $full_name = $_POST['fullName'];
@@ -154,6 +169,11 @@ class Controller{
         $course = $_POST['course'];
         $year = $_POST['schoolYear'];
         $section = $_POST['section'];
+        
+        if($this->dupeEmail($email)){
+            echo "<script>alert('Duplicate Email Found'); window.history.back();</script>";
+        exit();
+    }
         
         $sql="INSERT INTO users (full_name, email, role, course, year, section ) VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
