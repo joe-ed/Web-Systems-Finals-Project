@@ -1,393 +1,294 @@
-/* Admin_Page.js — FINAL FULL
-   Features:
-   - Sidebar toggle (collapsing)
-   - Section navigation (data-target)
-   - Settings dropdown
-   - Generic modal open/close with overlay + shake
-   - Role tabs (no default active) + class section enable only on student click
-   - User search filter
-   - Requests tabs (no default active) + filtering
-   - Reset button (Reset -> Resetted)
-   - 7-day auto-deletion of requests (based on data-requested-at on each <tr>)
-   - Event delegation for buttons in tables
-*/
-
+// ================= Admin_Page.js — Part 1 =================
 document.addEventListener('DOMContentLoaded', () => {
-  /* ================= Sidebar Toggle ================= */
-  const sidebar = document.getElementById('sidebarMenu');
-  const toggleBtn = document.getElementById('toggleSidebar');
-  const mainContent = document.getElementById('mainContent');
 
-  if (toggleBtn && sidebar && mainContent) {
-    const toggleIcon = toggleBtn.querySelector('i');
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('sidebar-collapsed');
-      if (toggleIcon) toggleIcon.classList.toggle('rotated');
-    });
-  }
+    /* ===================== BASIC ELEMENTS ===================== */
+    const sidebar = document.getElementById('sidebarMenu');
+    const toggleSidebarBtn = document.getElementById('toggleSidebar');
+    const mainContent = document.getElementById('mainContent');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const settingsIcon = document.getElementById('settingsIcon');
+    const settingsDropdown = document.getElementById('settingsDropdown');
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-  /* ================= Navigation ================= */
-  const navLinks = document.querySelectorAll('.nav-link');
-  const sections = document.querySelectorAll('.content-section');
+    /* ===================== SIDEBAR TOGGLE ===================== */
+    toggleSidebarBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('sidebar-collapsed');
 
-  function hideAllSections() {
-    sections.forEach(sec => {
-      sec.style.display = 'none';
-    });
-  }
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      // Manage active class for nav
-      navLinks.forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
-
-      // Show target section
-      const targetId = link.dataset.target;
-      if (!targetId) return;
-      const target = document.getElementById(targetId);
-      if (!target) return;
-
-      hideAllSections();
-      target.style.display = 'flex';
-      target.style.opacity = 0;
-      // Smooth fade-in
-      requestAnimationFrame(() => { target.style.opacity = 1; });
-    });
-  });
-
-  // Optional: ensure a default visible section (if you want dashboard visible by default)
-  // We will not force role-tabs or request-tabs active by default per your request.
-
-  /* ================= Settings Dropdown ================= */
-  const settingsIcon = document.getElementById('settingsIcon');
-  const settingsDropdown = document.getElementById('settingsDropdown');
-
-  if (settingsIcon && settingsDropdown) {
-    settingsIcon.addEventListener('click', (e) => {
-      e.stopPropagation();
-      settingsDropdown.classList.toggle('active');
+        const icon = toggleSidebarBtn.querySelector('i');
+        icon.classList.toggle('rotated');
     });
 
-    document.addEventListener('click', () => {
-      settingsDropdown.classList.remove('active');
+    /* ===================== NAVIGATION ===================== */
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const targetId = link.getAttribute('data-target');
+
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(sec => sec.style.display = 'none');
+
+            // Show targeted section
+            document.getElementById(targetId).style.display = 'flex';
+
+            // Highlight active link
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
     });
-  }
 
-  /* ================= Modals (Generic) ================= */
-  const modals = Array.from(document.querySelectorAll('.modal'));
-  const modalOverlay = document.createElement('div');
-  modalOverlay.className = 'modal-overlay';
-  document.body.appendChild(modalOverlay);
-
-  function openModal(modal) {
-    if (!modal) return;
-    modal.style.display = 'flex';
-    modalOverlay.style.display = 'block';
-    // animate
-    requestAnimationFrame(() => {
-      modal.style.opacity = 1;
-      modal.style.transform = 'translate(-50%, -50%) scale(1)';
+    /* ===================== SETTINGS DROPDOWN ===================== */
+    settingsIcon.addEventListener('click', () => {
+        settingsDropdown.classList.toggle('active');
     });
-  }
 
-  function closeModal(modal) {
-    if (!modal) return;
-    modal.style.opacity = 0;
-    modal.style.transform = 'translate(-50%, -50%) scale(0.8)';
-    modalOverlay.style.display = 'none';
-    setTimeout(() => { modal.style.display = 'none'; }, 300);
-  }
-
-  // Attach triggers defined in HTML (if present)
-  const addUserBtn = document.getElementById('addUserBtn');
-  const changePasswordBtn = document.getElementById('changePasswordBtn');
-
-  if (addUserBtn) {
-    const target = document.getElementById('addUserModal');
-    addUserBtn.addEventListener('click', () => openModal(target));
-  }
-  if (changePasswordBtn) {
-    const target = document.getElementById('changePasswordModal');
-    changePasswordBtn.addEventListener('click', () => openModal(target));
-  }
-
-  // Close buttons (elements with class close-modal or .close-modal)
-  document.querySelectorAll('.close-modal, .modal-close').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modal = btn.closest('.modal');
-      closeModal(modal);
-    });
-  });
-
-  // Click outside modals -> shake
-  modalOverlay.addEventListener('click', () => {
-    modals.forEach(modal => {
-      if (getComputedStyle(modal).display !== 'none') {
-        modal.classList.add('shake');
-        setTimeout(() => modal.classList.remove('shake'), 300);
-      }
-    });
-  });
-
-  // Prevent clicks inside modal from bubbling to overlay
-  modals.forEach(modal => modal.addEventListener('click', e => e.stopPropagation()));
-
-  /* ================= Role Tabs (Users Section) ================= */
-  const roleTabs = Array.from(document.querySelectorAll('.tab-button'));
-  const classSectionSelect = document.getElementById('classSectionSelect');
-
-  // Remove any default active class to ensure none active at load
-  roleTabs.forEach(t => t.classList.remove('active'));
-
-  roleTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // toggle active class - ensure single active
-      roleTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      // enable or disable classSectionSelect based on role
-      if (tab.dataset.role === 'student') {
-        if (classSectionSelect) {
-          classSectionSelect.disabled = false;
-          classSectionSelect.style.opacity = '1';
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (e) => {
+        if (!settingsIcon.contains(e.target) && !settingsDropdown.contains(e.target)) {
+            settingsDropdown.classList.remove('active');
         }
-      } else {
-        if (classSectionSelect) {
-          classSectionSelect.disabled = true;
-          classSectionSelect.style.opacity = '0.5';
-          classSectionSelect.value = 'all';
-        }
-      }
-
-      // Optionally: filter users table by role here if you manage a frontend list.
-      // This implementation assumes server-side or other code populates users table.
     });
-  });
 
-  /* ================= Users Search Filter ================= */
-  const userSearch = document.getElementById('userSearch');
-  const usersTableBody = document.getElementById('usersTableBody');
+    /* ===================== MODAL HANDLING ===================== */
+    const modals = document.querySelectorAll('.modal');
+    const modalOverlay = document.createElement('div');
+    modalOverlay.classList.add('modal-overlay');
+    document.body.appendChild(modalOverlay);
 
-  if (userSearch && usersTableBody) {
-    userSearch.addEventListener('input', () => {
-      const filter = userSearch.value.trim().toLowerCase();
-      const rows = usersTableBody.querySelectorAll('tr');
-      rows.forEach(row => {
-        const cellsText = Array.from(row.cells).map(c => c.textContent.toLowerCase()).join(' ');
-        row.style.display = cellsText.includes(filter) ? '' : 'none';
-      });
-    });
-  }
-
-  /* ================= Requests Tabs & Table Filtering ================= */
-  const requestsTabs = Array.from(document.querySelectorAll('.request-tab, .requests-tab'));
-  const requestsTableBody = document.getElementById('requestsTableBody');
-
-  // Ensure tabs are not active by default
-  requestsTabs.forEach(t => t.classList.remove('active'));
-
-  function filterRequestsByStatus(status) {
-    if (!requestsTableBody) return;
-    const rows = requestsTableBody.querySelectorAll('tr');
-    rows.forEach(row => {
-      const rowStatus = row.dataset.status || 'pending';
-      row.style.display = (status === rowStatus) ? '' : 'none';
-    });
-  }
-
-  requestsTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      requestsTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const status = tab.dataset.filter || tab.dataset.status;
-      if (status) filterRequestsByStatus(status);
-    });
-  });
-
-  /* ================= Requests: Reset Button Logic (Event Delegation) ================= */
-  // We will use event delegation on requestsTableBody so it handles dynamic rows as well.
-  if (requestsTableBody) {
-    requestsTableBody.addEventListener('click', (e) => {
-      const target = e.target;
-      // Reset button clicked
-      if (target && (target.classList.contains('reset-btn') || target.classList.contains('action-reset'))) {
-        e.preventDefault();
-
-        const row = target.closest('tr');
-        if (!row) return;
-
-        // Safety: confirm action? (not added per instruction; you can uncomment if needed)
-        // if (!confirm('Reset this user password to default (ID number)?')) return;
-
-        // Perform visual state change: Reset -> Resetted
-        markRowAsResetted(row, target);
-      }
-    });
-  }
-
-  function markRowAsResetted(row, btnElement) {
-    // change button UI
-    try {
-      if (btnElement) {
-        btnElement.textContent = 'Resetted';
-        btnElement.disabled = true;
-        btnElement.classList.remove('reset-btn');
-        btnElement.classList.add('resetted-btn');
-      }
-    } catch (err) {
-      // ignore
+    function openModal(modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => modal.style.opacity = '1', 10);
+        modalOverlay.style.display = 'block';
     }
 
-    // update row status and timestamp attributes (front-end only)
-    row.dataset.status = 'finished';
-    row.dataset.finishedAt = (new Date()).toISOString();
-
-    // If a requests tab filter is active, keep filtering consistent
-    const activeRequestsTab = requestsTabs.find(t => t.classList.contains('active'));
-    if (activeRequestsTab) {
-      const status = activeRequestsTab.dataset.filter || activeRequestsTab.dataset.status;
-      if (status && status !== 'finished') {
-        // Hide the row if current filter is not 'finished'
-        row.style.display = 'none';
-      } else {
-        // ensure visible if finished and filter expects finished
-        row.style.display = '';
-      }
+    function closeModal(modal) {
+        modal.style.opacity = '0';
+        setTimeout(() => modal.style.display = 'none', 300);
+        modalOverlay.style.display = 'none';
     }
-  }
 
-  /* ================= Auto-delete Requests after 7 days =================
-     Implementation notes:
-     - Each <tr> in requestsTableBody should have data-requested-at attribute (ISO string).
-       If missing, we treat creation date as now (but better to have it populated by backend).
-     - This logic runs on page load and every hour (or minute during dev).
-  */
-  function parseISO(dateString) {
-    try {
-      return new Date(dateString);
-    } catch (err) {
-      return new Date();
-    }
-  }
-
-  function deleteExpiredRequests() {
-    if (!requestsTableBody) return;
-    const rows = Array.from(requestsTableBody.querySelectorAll('tr'));
-    const now = new Date();
-    rows.forEach(row => {
-      // Prefer data-requested-at; fallback to data-created-at or data-date
-      const requestedAtRaw = row.dataset.requestedAt || row.dataset.requested_at || row.dataset.dateRequested || row.dataset.createdAt || row.dataset['requested-at'];
-      const requestedAt = requestedAtRaw ? parseISO(requestedAtRaw) : null;
-
-      // If no timestamp, skip deletion (or choose to delete after 7 days from now)
-      if (!requestedAt) return;
-
-      const msDiff = now - requestedAt;
-      const daysDiff = msDiff / (1000 * 60 * 60 * 24);
-      if (daysDiff >= 7) {
-        // Remove row from DOM
-        row.remove();
-      }
+    // Close modal if overlay clicked
+    modalOverlay.addEventListener('click', () => {
+        modals.forEach(modal => closeModal(modal));
     });
-  }
 
-  // Run on load
-  deleteExpiredRequests();
-  // Check periodically: every 60 minutes (3600000 ms). Using 1 hour to be reasonable.
-  // For dev you may set to 60000 (1 minute).
-  setInterval(deleteExpiredRequests, 60 * 60 * 1000);
+    /* ===================== ADD NEW USER MODAL ===================== */
+    const addUserBtn = document.getElementById('addUserBtn');
+    const addUserModal = document.getElementById('addUserModal');
+    const closeAddUser = document.getElementById('closeAddUser');
 
-  /* ================= Utility: Add request row function (front-end helper) =================
-     You can use this to append a new request row from front-end (for testing or UI flows).
-     Example:
-       addRequestRow({requestId:'r1', userId:'u1', idNumber:'202310045', fullname:'Juan', email:'a@b.com', status:'pending', requestedAt: new Date().toISOString()})
-  */
-  function addRequestRow({ requestId = '', userId = '', idNumber = '', fullname = '', email = '', status = 'pending', requestedAt = new Date().toISOString() }) {
-    if (!requestsTableBody) return null;
+    addUserBtn.addEventListener('click', () => openModal(addUserModal));
+    closeAddUser.addEventListener('click', () => closeModal(addUserModal));
 
-    const tr = document.createElement('tr');
-    tr.dataset.status = status;
-    tr.dataset.requestId = requestId;
-    tr.dataset.userId = userId;
-    tr.dataset.requestedAt = requestedAt;
+    /* ===================== EDIT USER MODAL ===================== */
+    const editUserModal = document.getElementById('editUserModal');
+    const closeEditUser = document.getElementById('closeEditUser');
+    closeEditUser.addEventListener('click', () => closeModal(editUserModal));
 
-    const tdId = document.createElement('td');
-    tdId.textContent = idNumber;
-    const tdName = document.createElement('td');
-    tdName.textContent = fullname;
-    const tdEmail = document.createElement('td');
-    tdEmail.textContent = email;
-    const tdAction = document.createElement('td');
-    tdAction.style.textAlign = 'center';
+    /* ===================== CHANGE PASSWORD MODAL ===================== */
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    const closeChangePassword = document.getElementById('closeChangePassword');
 
-    if (status === 'pending') {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'reset-btn action-reset';
-      btn.textContent = 'Reset';
-      tdAction.appendChild(btn);
-    } else {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'resetted-btn';
-      btn.disabled = true;
-      btn.textContent = 'Resetted';
-      tdAction.appendChild(btn);
+    changePasswordBtn.addEventListener('click', () => openModal(changePasswordModal));
+    closeChangePassword.addEventListener('click', () => closeModal(changePasswordModal));
+
+    /* ===================== LOGOUT BUTTON ===================== */
+    logoutBtn.addEventListener('click', () => {
+        // Example: redirect to login page
+        window.location.href = 'login.html';
+    });
+
+    /* ===================== TAB BUTTONS (USERS) ===================== */
+    const userTabs = document.querySelectorAll('.tab-button');
+    const classSectionSelect = document.getElementById('classSectionSelect');
+
+    userTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Activate tab
+            userTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Enable section dropdown only for students
+            if (tab.dataset.role === 'student') {
+                classSectionSelect.disabled = false;
+            } else {
+                classSectionSelect.disabled = true;
+                classSectionSelect.value = 'all';
+            }
+        });
+    });
+
+    /* ===================== REQUEST & MESSAGE TABS PLACEHOLDER ===================== */
+    // Part 2 will contain full logic for requests, messages, tables, and form submissions
+
+});
+// ================= Admin_Page.js — Part 2 =================
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ===================== USERS TABLE LOGIC ===================== */
+    const usersTableBody = document.getElementById('usersTableBody');
+
+    let usersData = [];
+
+    function renderUsersTable(filterRole = 'all', filterSection = 'all') {
+        usersTableBody.innerHTML = '';
+        const filtered = usersData.filter(user => 
+            (filterRole === 'all' || user.role === filterRole) &&
+            (filterSection === 'all' || user.section === filterSection)
+        );
+
+        if (filtered.length === 0) {
+            usersTableBody.innerHTML = '<tr class="no-user"><td colspan="7">No users found</td></tr>';
+            return;
+        }
+
+        filtered.forEach(user => {
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.fullName}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>${user.role === 'student' ? `${user.course}-${user.year}${user.section}` : '-'}</td>
+                <td>${user.status}</td>
+                <td>
+                    <button class="edit-btn" data-id="${user.id}">Edit</button>
+                    <button class="delete-btn" data-id="${user.id}">Delete</button>
+                    ${user.role !== 'student' ? '' : '<button class="reset-btn" data-id="'+user.id+'">Reset PW</button>'}
+                </td>
+            `;
+            usersTableBody.appendChild(tr);
+        });
+
+        attachUserTableEvents();
     }
 
-    tr.appendChild(tdId);
-    tr.appendChild(tdName);
-    tr.appendChild(tdEmail);
-    tr.appendChild(tdAction);
+    function attachUserTableEvents() {
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const userId = e.target.dataset.id;
+                const user = usersData.find(u => u.id === userId);
 
-    requestsTableBody.prepend(tr); // newest on top
-    return tr;
-  }
+                if (!user) return;
 
-  // Example helper usage (commented out)
-  // addRequestRow({ requestId: 'req-123', userId: 'u-1', idNumber: '20250001', fullname: 'Test User', email: 'test@example.com', status: 'pending', requestedAt: new Date().toISOString() });
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUserName').value = user.fullName;
+                document.getElementById('editUserEmail').value = user.email;
+                document.getElementById('editUserStatus').value = user.status;
+                document.getElementById('editUserCourse').value = user.course || 'BSIT';
+                document.getElementById('editUserYear').value = user.year || '1';
+                document.getElementById('editUserSection').value = user.section || 'A';
 
-  /* ================= Initialization: ensure existing request rows have proper attributes & buttons attached ================= */
-  (function normalizeExistingRequestRows() {
-    if (!requestsTableBody) return;
-    const rows = Array.from(requestsTableBody.querySelectorAll('tr'));
-    rows.forEach(row => {
-      // If row has no data-requested-at, set it to now (front-end only)
-      if (!row.dataset.requestedAt && !row.dataset.requested_at && !row.dataset.createdAt) {
-        row.dataset.requestedAt = new Date().toISOString();
-      }
+                openModal(document.getElementById('editUserModal'));
+            });
+        });
 
-      // If row status is 'pending' but has a button that is disabled or says 'Resetted', normalize to pending state
-      if ((row.dataset.status || '').toLowerCase() === 'pending') {
-        const btn = row.querySelector('button');
-        if (btn) {
-          btn.classList.remove('resetted-btn');
-          btn.classList.add('reset-btn', 'action-reset');
-          btn.disabled = false;
-          btn.textContent = 'Reset';
-        }
-      } else if ((row.dataset.status || '').toLowerCase() === 'finished') {
-        const btn = row.querySelector('button');
-        if (btn) {
-          btn.classList.remove('reset-btn', 'action-reset');
-          btn.classList.add('resetted-btn');
-          btn.disabled = true;
-          btn.textContent = 'Resetted';
-        }
-      }
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const userId = e.target.dataset.id;
+                if (confirm('Are you sure you want to delete this user?')) {
+                    usersData = usersData.filter(u => u.id !== userId);
+                    renderUsersTable();
+                }
+            });
+        });
+
+        document.querySelectorAll('.reset-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const userId = e.target.dataset.id;
+                if (confirm('Are you sure you want to reset this user\'s password?')) {
+                    alert(`Password for ${userId} has been reset to default.`);
+                }
+            });
+        });
+    }
+
+    /* ===================== ADD NEW USER ===================== */
+    const addUserModal = document.getElementById('addUserModal');
+    document.querySelector('#addUserModal .modal-footer button').addEventListener('click', () => {
+        const id = document.getElementById('newUserId').value;
+        const name = document.getElementById('newUserName').value.trim();
+        const email = document.getElementById('newUserEmail').value.trim();
+        const role = document.getElementById('newUserRole').value;
+        const course = document.getElementById('newUserCourse').value;
+        const year = document.getElementById('newUserYear').value;
+        const section = document.getElementById('newUserSection').value;
+
+        if (!name || !email || !role) return alert('Please fill all required fields.');
+
+        usersData.push({ id, fullName: name, email, role, course, year, section, status: 'active' });
+
+        // Increment ID for next user
+        document.getElementById('newUserId').value = (parseInt(id) + 1).toString();
+
+        renderUsersTable();
+        closeModal(addUserModal);
+
+        // Clear input fields
+        document.getElementById('newUserName').value = '';
+        document.getElementById('newUserEmail').value = '';
+        document.getElementById('newUserRole').value = '';
+        document.getElementById('newUserCourse').value = '';
+        document.getElementById('newUserYear').value = '';
+        document.getElementById('newUserSection').value = '';
     });
-  })();
 
-  /* ================= Optional: make sure the Requests tab doesn't show anything unless clicked (keeps your requirement) ================= */
-  // We already leave tabs unselected and rows visible in DOM. To be explicit:
-  // hide requests section rows until a tab is clicked
-  (function hideRequestsUntilTabClicked() {
-    if (!requestsTableBody) return;
-    // Do not hide the rows globally (so admin can see them if they navigate to Requests),
-    // but we ensure that clicking tabs filters rows as requested.
-  })();
+    /* ===================== SAVE EDITED USER ===================== */
+    const editUserModalFooterBtn = document.querySelector('#editUserModal .modal-footer button');
+    editUserModalFooterBtn.addEventListener('click', () => {
+        const id = document.getElementById('editUserId').value;
+        const name = document.getElementById('editUserName').value.trim();
+        const email = document.getElementById('editUserEmail').value.trim();
+        const status = document.getElementById('editUserStatus').value;
+        const course = document.getElementById('editUserCourse').value;
+        const year = document.getElementById('editUserYear').value;
+        const section = document.getElementById('editUserSection').value;
 
-  /* ================= End DOMContentLoaded ================= */
+        const user = usersData.find(u => u.id === id);
+        if (!user) return;
+
+        user.fullName = name;
+        user.email = email;
+        user.status = status;
+        user.course = course;
+        user.year = year;
+        user.section = section;
+
+        renderUsersTable();
+        closeModal(document.getElementById('editUserModal'));
+    });
+
+    /* ===================== USERS FILTERING ===================== */
+    const usersSearchInput = document.getElementById('usersSearchInput');
+    usersSearchInput.addEventListener('input', () => {
+        const filterText = usersSearchInput.value.toLowerCase();
+        const activeTab = document.querySelector('.tab-button.active')?.dataset.role || 'all';
+        const sectionValue = document.getElementById('classSectionSelect').value;
+        renderUsersTable(activeTab, sectionValue);
+    });
+
+    classSectionSelect.addEventListener('change', () => {
+        const activeTab = document.querySelector('.tab-button.active')?.dataset.role || 'all';
+        renderUsersTable(activeTab, classSectionSelect.value);
+    });
+
+    // ===================== INITIAL RENDER =====================
+    renderUsersTable();
+
+    // ===================== DASHBOARD COUNTS =====================
+    const totalAdmin = document.getElementById('totalAdmin');
+    const totalTeachers = document.getElementById('totalTeachers');
+    const totalStudents = document.getElementById('totalStudents');
+    const totalUsers = document.getElementById('totalUsers');
+
+    function updateDashboardCounts() {
+        totalAdmin.textContent = usersData.filter(u => u.role === 'admin').length;
+        totalTeachers.textContent = usersData.filter(u => u.role === 'teacher').length;
+        totalStudents.textContent = usersData.filter(u => u.role === 'student').length;
+        totalUsers.textContent = usersData.length;
+    }
+
+    updateDashboardCounts();
+
 });

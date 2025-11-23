@@ -1,456 +1,281 @@
+/* ================= Basic Reset ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
 
+body {
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ================= Header ================= */
 header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 60px;
-  padding: 20px 5%;
-  backdrop-filter: blur(5px);
   display: flex;
+  justify-content: flex-end;
   align-items: center;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(5px);
+  padding: 0 5%;
   z-index: 99;
 }
 
-.logo {
-  font-size: 30px;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
-  margin-right: auto;
-}
-
-nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 500;
-  margin-left: 40px;
-  position: relative;
-  padding: 5px 0;
-  transition: color 0.3s ease;
-}
-
-nav a::before {
-  content: '';
+header .logo {
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 3px;
-  background: #ffffff;
-  border-radius: 2px;
-  transform: translateX(-50%);
-  transition: width 0.4s ease;
-}
-
-nav a:hover {
-  color: #ffffff;
-}
-
-nav a:hover::before {
-  width: 100%;
-  box-shadow: 0 0 8px #ffffff, 0 0 16px #ffffff;
-}
-
-.login-form {
-  margin-left: 40px;
-}
-
-/* Glow effect for login button */
-.login-form .login-button {
-  height: 40px;
-  width: 125px;
-  padding: 0 35px;
-  background: transparent;
-  border: 2px solid white;
-  border-radius: 40px;
-  font-size: 16px;
-  color: #ffffff;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  position: relative;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.login-form .login-button::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.7), rgba(255,204,0,0) 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.login-form .login-button:hover::before {
-  opacity: 1;
-  animation: glowPulse 1.5s infinite;
-}
-
-.login-form .login-button:hover {
-  color: black;
-  background: #ffffff;
-  box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
-}
-
-/* Pulse animation */
-@keyframes glowPulse {
-  0%, 100% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.2); opacity: 1; }
-}
-
-/* Optional: glow effect for login container */
-.login {
-  box-shadow: 0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1);
-  animation: borderGlow 2s ease-in-out infinite;
-}
-
-@keyframes borderGlow {
-  0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1); }
-  50% { box-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff; }
-}
-
-
-.login-form .login-button:hover {
-  background: #ffffff;
-  color: black;
-}
-
-.video-section {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-  padding: 0 5%;
-}
-
-.bg-video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: -1;
-}
-
-.login {
-  position: fixed;
-  width: 90%;
-  max-width: 420px;
-  height: 450px;
-  background: rgba(38, 38, 38, 0.7);
-  border: 2px solid #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1);
-  backdrop-filter: blur(5px);
-  color: #ffffff;
-  inset: 0;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.8);
-  overflow: hidden;
-  z-index: 9999;
-  animation-duration: 0.4s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease;
-  transition: height 0.3s ease, max-height 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
-}
-
-@keyframes borderGlow {
-  0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.996), 0 0 20px rgba(255,255,255,0.1); }
-  50% { box-shadow: 0 0 20px rgb(255, 255, 255), 0 0 40px rgba(255,255,255,0.3); }
-}
-
-@keyframes loginZoomIn {
-  0% { opacity: 0; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes loginZoomOut {
-  0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.8); }
-}
-
-.login.show {
-  pointer-events: all;
-  animation: loginZoomIn 0.4s ease forwards, borderGlow 2s ease-in-out infinite;
-}
-
-.login.slide-register {
-  height: 540px;
-  max-height: 95vh;
-}
-
-.login.hide {
-  pointer-events: none;
-  animation: loginZoomOut 0.4s ease forwards;
-}
-
-.form-box {
-  position: absolute;
-  width: 100%;
-  max-width: 300px;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.form-box.login {
-  transform: translateX(-100%);
-}
-
-.form-box.register {
-  transform: translateX(100%);
-}
-
-.form-box.active {
-  transform: translateX(0);
-  opacity: 1;
-  pointer-events: all;
-}
-
-.form-box.hidden {
-  transform: translateX(0);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.form-box h2 {
-  font-size: 30px;
-  text-align: center;
-}
-
-.user {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  margin: 20px 0;
-}
-
-.user input[type="text"],
-.user input[type="email"],
-.user input[type="password"] {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: 2px solid gray;
-  outline: none;
-  border-radius: 40px;
-  font-size: 16px;
-  color: #ffffff;
-  padding: 20px 45px 20px 20px;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.user input::placeholder {
-  color: #ffffff;
-  opacity: 0.7;
-  transition: color 0.3s ease, opacity 0.3s ease;
-}
-
-.user input:focus::placeholder {
-  opacity: 0.4;
-}
-
-.user input:focus {
-  color: #ffffff;
-  border-color: #ffffff;
-}
-
-.user select {
-  width: 100%;
-  height: 50px;
-  background: rgba(0,0,0,0.5);
-  border: 2px solid gray;
-  border-radius: 40px;
-  font-size: 16px;
-  color: #ffffff;
-  padding: 0 20px;
-  appearance: none;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.user select:hover,
-.user select:focus {
-  background: rgba(255,255,255,0.1);
-  border-color: #ffffff;
-  color: #ffffff;
-}
-
-.user select option {
-  background: rgba(0,0,0,0.7);
-  color: #ffffff;
-}
-
-.user select option:checked {
-  background: #ffffff;
-  color: #000000;
-}
-
-.user select option[disabled] {
-  color: #cccccc;
-}
-
-.user select::after {
-  content: '\25BC';
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: #ffffff;
-  font-size: 16px;
-}
-
-.user i {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  pointer-events: none;
-}
-
-/* Buttons inside forms */
-.btn {
-  width: 100%;
-  height: 45px;
-  background: white;
-  border-radius: 40px;
-  border: none;
-  font-size: 16px;
-  color: black;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn:hover {
-  color: black;
-  background: #ffffff;
-  box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff;
-  animation: glowPulse 1.5s infinite;
-}
-
-/* Glow animations */
-@keyframes linkGlowPulse {
-  0%, 100% { text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff; }
-  50% { text-shadow: 0 0 12px #ffffff, 0 0 24px #ffffff; }
-}
-
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff; }
-  50% { box-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff; }
-}
-
-.form-box p {
-  font-size: 14.5px;
-  text-align: center;
-  margin: 20px 0 10px;
-}
-
-/* Links in forms: register, login, forgot password */
-.form-box p a,
-.user.extra-options a {
-  color: #ffffff;
-  text-decoration: none;
+  left: 5%;
+  font-size: 1.6rem;
   font-weight: 600;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+}
+
+header nav a {
+  color: #fff;
+  margin-left: 30px;
+  text-decoration: none;
   position: relative;
+  transition: all 0.3s ease-in-out;
+  text-shadow: 0 0 6px #fff, 0 0 12px #fff;
 }
 
-.form-box p a:hover,
-.user.extra-options a:hover {
-  color: #ffffff;
-  text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff, 0 0 18px #ffffff;
-  animation: linkGlowPulse 1.2s infinite;
+header nav a:hover {
+  text-shadow: 0 0 14px #fff, 0 0 28px #fff;
 }
 
-/* Glow effect for the close button */
-.login .X {
+header nav a::after {
+  content: '';
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 50px;
-  height: 50px;
-  background: none;
-  color: #ffffff;
+  left: 50%;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+header nav a:hover::after {
+  width: 100%;
+  box-shadow: 0 0 12px #fff, 0 0 24px #fff;
+}
+
+header .login-button {
+  padding: 6px 18px;
+  margin-left: 30px;
   border: none;
-  border-bottom-left-radius: 20px;
-  font-size: 35px;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border-radius: 20px;
   cursor: pointer;
-  z-index: 1;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff;
 }
 
-/* Hover glow animation */
-.login .X:hover {
-  color: #ffffff;
-  text-shadow: 0 0 8px #ffffff, 0 0 16px #ffffff, 0 0 24px #ffffff;
-  animation: XGlowPulse 1.2s infinite;
+header .login-button:hover {
+  box-shadow: 0 0 20px #fff, 0 0 40px #fff;
 }
 
-@keyframes XGlowPulse {
-  0%, 100% { text-shadow: 0 0 8px #ffffff, 0 0 16px #ffffff, 0 0 24px #ffffff; }
-  50% { text-shadow: 0 0 16px #ffffff, 0 0 32px #ffffff, 0 0 48px #ffffff; }
-}
-
-
-.user.extra-options {
+/* ================= Modal ================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
-  font-size: 14px;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+  z-index: 100;
 }
 
-/* Remember me checkbox label */
-.user.extra-options label {
-  color: #ffffff;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+.modal.active {
+  visibility: visible;
+  opacity: 1;
 }
 
-.user.extra-options label:hover {
-  color: #ffffff;
-  text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
+/* ================= Modal Content ================= */
+.modal-content {
+  background: rgba(20, 20, 20, 0.95);
+  border-radius: 20px;
+  width: 440px;
+  max-width: 95%;
+  padding: 40px 35px;
+  box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border: 2px solid transparent;
+  animation: glowBorder 2.5s infinite alternate;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, height 0.4s ease-in-out;
 }
 
-@media screen and (max-width: 768px) {
-  header { padding: 15px 5%; }
-  nav a { margin-left: 20px; font-size: 14px; }
-  .login { width: 95%; }
-  .form-box h2 { font-size: 26px; }
-  .user { margin: 15px 0; }
-  .btn { height: 40px; font-size: 14px; }
+.modal.active .modal-content {
+  transform: scale(1);
+  opacity: 1;
 }
 
-@media screen and (max-width: 480px) {
-  nav a { margin-left: 10px; font-size: 12px; }
-  .form-box h2 { font-size: 22px; }
-  .user input, .user select { padding: 15px 20px; font-size: 14px; }
-  .login { width: 95%; max-height: 90vh; }
+/* Glow animation for modal border */
+@keyframes glowBorder {
+  0%, 100% {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+    border-color: #fff;
+  }
+  50% {
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 50px #fff;
+    border-color: #fff;
+  }
+}
+
+/* ================= Close Button ================= */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.4rem;
+  color: #fff;
+  cursor: pointer;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.close-btn:hover {
+  text-shadow: 0 0 20px #fff, 0 0 40px #fff;
+}
+
+/* ================= Modal Views ================= */
+.modal-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-view.active {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ================= Titles ================= */
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 0 0 8px #fff, 0 0 16px #fff, 0 0 20px #fff;
+  font-size: 1.4rem;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ================= Inputs & Selects ================= */
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  outline: none;
+  box-shadow: 0 0 6px #fff, 0 0 12px #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-content input::placeholder,
+.modal-content select {
+  color: #ddd;
+  text-shadow: 0 0 4px #fff;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: #fff;
+  box-shadow: 0 0 12px #fff, 0 0 20px #fff;
+}
+
+/* ================= Buttons ================= */
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-content button:hover {
+  box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+  transform: translateY(-2px);
+}
+
+/* Disabled button style */
+button.disabled {
+  background: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================= Links ================= */
+.modal-content a {
+  color: #fff;
+  display: block;
+  margin: 10px 0;
+  text-decoration: none;
+  font-weight: 500;
+  text-shadow: 0 0 6px #fff, 0 0 12px #fff;
+  cursor: pointer;
+}
+
+.modal-content a:hover {
+  text-shadow: 0 0 14px #fff, 0 0 28px #fff;
+}
+
+/* ================= Countdown ================= */
+#countdown {
+  font-weight: 600;
+  color: #fff;
+  margin: 5px 0;
+  text-align: center;
+}
+
+/* ================= Submit Code Container ================= */
+#submitCodeContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* ================= Modal Auto Height ================= */
+#loginView,
+#forgotView,
+#resetView {
+  height: auto; /* height grows with content */
 }
