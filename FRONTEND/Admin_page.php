@@ -1,6 +1,10 @@
 <?php
 include("../BACKEND/Controller.php");
+$controller = new Controller();
+$users = $controller->read_all();
+$counts = $controller->roleCount();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -130,10 +134,10 @@ include("../BACKEND/Controller.php");
 
             <!-- Summary Cards -->
             <div class="summary-cards">
-                <div class="card"><h3>Total Admin</h3><p id="totalAdmin">0</p></div>
-                <div class="card"><h3>Total Teachers</h3><p id="totalTeachers">0</p></div>
-                <div class="card"><h3>Total Students</h3><p id="totalStudents">0</p></div>
-                <div class="card"><h3>Total Users</h3><p id="totalUsers">0</p></div>
+                <div class="card"><h3>Total Admin</h3><p id="totalAdmin"><?= $counts['admin'] ?></p></div>
+                <div class="card"><h3>Total Teachers</h3><p id="totalTeachers"><?= $counts['teacher'] ?></p></div>
+                <div class="card"><h3>Total Students</h3><p id="totalStudents"><?= $counts['student'] ?></p></div>
+                <div class="card"><h3>Total Users</h3><p id="totalUsers"><?= $counts['total'] ?></p></div>
             </div>
 
             <!-- Users Table -->
@@ -153,8 +157,7 @@ include("../BACKEND/Controller.php");
                     </thead>
                     <tbody id="usersTableBody">
                         <?php
-                            $controller = new Controller();
-                            $users = $controller->read_all();
+                           
 
                             foreach($users as $user):
                                 ?>

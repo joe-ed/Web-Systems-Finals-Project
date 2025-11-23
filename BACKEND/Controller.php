@@ -37,7 +37,7 @@ class Controller{
     }
 
     public function read_all(){
-        $sql="SELECT * FROM users";
+        $sql="SELECT * FROM users ORDER BY role ASC";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
 
@@ -160,6 +160,31 @@ class Controller{
     
         return $result->num_rows > 0;
     }
+
+    //display user counts per role+total users
+    public function roleCount() {
+    $sql = "SELECT role, COUNT(*) as total FROM users GROUP BY role";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $counts = [
+        'admin' => 0,
+        'teacher' => 0,
+        'student' => 0,
+        'total' => 0
+    ];
+
+    while($row = $result->fetch_assoc()) {
+        $role = $row['role'];
+        if (isset($counts[$role])) {
+            $counts[$role] = $row['total'];
+        }
+        $counts['total'] += $row['total'];
+    }
+
+    return $counts;
+}
     
     public function create(){
 
@@ -186,6 +211,12 @@ class Controller{
         }else{
             echo "Error!";
         }
+    }
+    //login page func test
+    //register
+    public function register($idnumber, $email, $password, $role){
+        
+
     }
     
 }
