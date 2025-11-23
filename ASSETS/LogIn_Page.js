@@ -1,68 +1,94 @@
-const loginContainer = document.querySelector('.login');
-const loginBtn = document.querySelector('.login-button');
-const closeBtn = document.querySelector('.X');
-const registerLink = document.querySelector('.register_link');
-const loginLink = document.querySelector('.login_link');
+// ================== Element Selectors ==================
+const modal = document.getElementById("mainModal");
+const modalContent = document.querySelector(".modal-content");
 
-const loginForm = loginContainer.querySelector('.form-box:not(.register)');
-const registerForm = loginContainer.querySelector('.form-box.register');
+const loginBtnOpen = document.querySelector(".login-button");
+const closeBtn = document.querySelector(".close-btn");
 
-function openLogin() {
-  loginContainer.style.pointerEvents = 'all'; // enable interactions
-  loginContainer.classList.add('show');
-  loginContainer.classList.remove('hide', 'slide-register');
+const loginView = document.getElementById("loginView");
+const forgotView = document.getElementById("forgotView");
+const resetView = document.getElementById("resetView");
 
-  loginForm.classList.add('active');
-  loginForm.classList.remove('hidden');
+const forgotLink = document.getElementById("forgotLink");
+const backToLogin = document.getElementById("backToLogin");
 
-  registerForm.classList.add('hidden');
-  registerForm.classList.remove('active');
+const sendCodeBtn = document.getElementById("sendCodeBtn");
+const countdownEl = document.getElementById("countdown");
+
+let countdown = 120;
+let countdownTimer = null;
+
+// ================== Modal Open ==================
+loginBtnOpen.addEventListener("click", () => {
+  modal.classList.add("active");
+  showView(loginView);
+});
+
+// ================== Modal Close ==================
+closeBtn.addEventListener("click", () => {
+  modal.classList.remove("active");
+  resetForgotModal();
+});
+
+// ================== Switch to Forgot Password ==================
+forgotLink.addEventListener("click", () => {
+  showView(forgotView);
+  resetForgotModal();
+});
+
+// ================== Back to Login ==================
+backToLogin.addEventListener("click", () => {
+  resetForgotModal();
+  showView(loginView);
+});
+
+// ================== View Switcher ==================
+function showView(view) {
+  [loginView, forgotView, resetView].forEach(v => v.classList.remove("active"));
+  view.classList.add("active");
 }
 
-function closeLogin() {
-  loginContainer.classList.add('hide');
-  loginContainer.classList.remove('show');
+// ================== Reset Forgot Password State ==================
+function resetForgotModal() {
+  clearInterval(countdownTimer);
+  countdown = 120;
 
-  loginContainer.addEventListener('animationend', function handler() {
-    loginContainer.classList.remove('hide');
-    loginContainer.style.pointerEvents = 'none';
-    loginContainer.removeEventListener('animationend', handler);
-  });
+  countdownEl.style.display = "none";
+  countdownEl.innerText = "";
 
-  loginForm.classList.add('hidden');
-  loginForm.classList.remove('active');
-
-  registerForm.classList.add('hidden');
-  registerForm.classList.remove('active');
-
-  loginContainer.classList.remove('slide-register');
+  sendCodeBtn.innerText = "Send Code";
+  sendCodeBtn.disabled = false;
+  sendCodeBtn.classList.remove("disabled");
 }
 
-function switchToRegister(e) {
-  e.preventDefault();
+// ================== SEND CODE / RESEND CODE LOGIC ==================
+sendCodeBtn.addEventListener("click", () => {
+  if (sendCodeBtn.disabled) return;
 
-  loginForm.classList.add('hidden');
-  loginForm.classList.remove('active');
+  // Disable button and dim it
+  sendCodeBtn.disabled = true;
+  sendCodeBtn.classList.add("disabled");
+  sendCodeBtn.innerText = "Resend Code";
 
-  registerForm.classList.remove('hidden');
-  registerForm.classList.add('active');
+  // Show countdown
+  countdownEl.style.display = "block";
+  countdownEl.innerText = countdown + "s";
 
-  loginContainer.classList.add('slide-register');
-}
+  clearInterval(countdownTimer);
 
-function switchToLogin(e) {
-  e.preventDefault();
+  countdownTimer = setInterval(() => {
+    countdown--;
+    countdownEl.innerText = countdown + "s";
 
-  registerForm.classList.add('hidden');
-  registerForm.classList.remove('active');
+    if (countdown <= 0) {
+      clearInterval(countdownTimer);
 
-  loginForm.classList.remove('hidden');
-  loginForm.classList.add('active');
+      // Enable the button visually and functionally
+      sendCodeBtn.disabled = false;
+      sendCodeBtn.classList.remove("disabled");
+      sendCodeBtn.innerText = "Resend Code";
 
-  loginContainer.classList.remove('slide-register');
-}
-
-loginBtn.addEventListener('click', openLogin);
-closeBtn.addEventListener('click', closeLogin);
-registerLink.addEventListener('click', switchToRegister);
-loginLink.addEventListener('click', switchToLogin);
+      countdownEl.style.display = "none";
+    }
+  }, 1000);
+});

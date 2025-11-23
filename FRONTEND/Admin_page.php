@@ -41,7 +41,7 @@ $counts = $controller->roleCount();
         <div class="sidebar-profile-section">
             <div class="sidebar-profile-picture-wrapper">
                 <img src="../ASSETS/UserIconPic.jfif" class="profile-picture">
-                <i class='bx bxs-camera profile-picture-camera-icon'></i>
+                <i class='bx  bxs-camera'></i>
             </div>
             <span class="sidebar-profile-name">Admin Name</span>
             <span class="sidebar-admin-id">ID-00001</span>
@@ -85,10 +85,40 @@ $counts = $controller->roleCount();
         <!-- DASHBOARD SECTION -->
         <section id="dashboardSection" class="content-section">
             <h1>Dashboard</h1>
-
-            <!-- Notifications Container -->
+            <div class="summary-cards">
+                <div class="card">
+                    <h3><i class='bx bxs-user'></i> Total Admin</h3>
+                    <p id="totalAdmin">0</p>
+                    <p class="no-data-msg" style="display:none;">No Admins yet</p>
+                </div>
+                <div class="card">
+                    <h3><i class='bx bxs-user-voice'></i> Total Teachers</h3>
+                    <p id="totalTeachers">0</p>
+                    <p class="no-data-msg" style="display:none;">No Teachers yet</p>
+                </div>
+                <div class="card">
+                    <h3><i class='bx bxs-graduation'></i> Total Students</h3>
+                    <p id="totalStudents">0</p>
+                    <p class="no-data-msg" style="display:none;">No Students yet</p>
+                </div>
+                <div class="card">
+                    <h3><i class='bx bxs-group'></i> Total Users</h3>
+                    <p id="totalUsers">0</p>
+                    <p class="no-data-msg" style="display:none;">No Users yet</p>
+                </div>
+                <div class="card">
+                    <h3><i class='bx bxs-hourglass'></i> Pending Requests</h3>
+                    <p id="totalPendingRequests">0</p>
+                    <p class="no-data-msg" style="display:none;">No Pending Requests</p>
+                </div>
+                <div class="card">
+                    <h3><i class='bx bxs-message'></i> Unread Messages</h3>
+                    <p id="totalUnreadMessages">0</p>
+                    <p class="no-data-msg" style="display:none;">No Unread Messages</p>
+                </div>
+            </div>
             <div id="dashboardNotifications" class="dashboard-notifications">
-                <!-- Dashboard notifications will populate here dynamically -->
+                <p class="no-notification">There are no notifications</p>
             </div>
         </section>
 
@@ -96,52 +126,55 @@ $counts = $controller->roleCount();
         <section id="usersSection" class="content-section users-section" style="display:none;">
             <h1 class="section-title">Manage Users</h1>
 
-            <!-- Role Tabs + Sections Dropdown -->
+            <div class="search-bar-container">
+                <input type="text" id="usersSearchInput" placeholder="Search users...">
+            </div>
+
             <div class="users-tabs-container">
                 <div class="users-tabs">
                     <button class="tab-button" data-role="admin">Admin</button>
                     <button class="tab-button" data-role="teacher">Teacher</button>
                     <button class="tab-button" data-role="student">Student</button>
                 </div>
-                <select id="classSectionSelect" disabled style="opacity:0.5;">
+                <select id="classSectionSelect" disabled>
                     <option value="all" selected>All Sections</option>
-                    <option value="BSIT-1A">BSIT 1A</option>
-                    <option value="BSIT-1B">BSIT 1B</option>
-                    <option value="BSIT-2A">BSIT 2A</option>
-                    <option value="BSIT-2B">BSIT 2B</option>
-                    <option value="BSIT-3A">BSIT 3A</option>
-                    <option value="BSIT-3B">BSIT 3B</option>
-                    <option value="BSIT-4A">BSIT 4A</option>
-                    <option value="BSIT-4B">BSIT 4B</option>
-                    <option value="BSDC-1A">BSDC 1A</option>
-                    <option value="BSDC-1B">BSDC 1B</option>
-                    <option value="BSDC-2A">BSDC 2A</option>
-                    <option value="BSDC-2B">BSDC 2B</option>
-                    <option value="BSDC-3A">BSDC 3A</option>
-                    <option value="BSDC-3B">BSDC 3B</option>
-                    <option value="BSDC-4A">BSDC 4A</option>
-                    <option value="BSDC-4B">BSDC 4B</option>
-                    <option value="BLIS-1A">BLIS 1A</option>
-                    <option value="BLIS-1B">BLIS 1B</option>
-                    <option value="BLIS-2A">BLIS 2A</option>
-                    <option value="BLIS-2B">BLIS 2B</option>
-                    <option value="BLIS-3A">BLIS 3A</option>
-                    <option value="BLIS-3B">BLIS 3B</option>
-                    <option value="BLIS-4A">BLIS 4A</option>
-                    <option value="BLIS-4B">BLIS 4B</option>
+                    <!-- Sections -->
+                    <option value="BSIT-1A">BSIT-1A</option>
+                    <option value="BSIT-1B">BSIT-1B</option>
+                    <option value="BSIT-2A">BSIT-2A</option>
+                    <option value="BSIT-2B">BSIT-2B</option>
+                    <option value="BSIT-3A">BSIT-3A</option>
+                    <option value="BSIT-3B">BSIT-3B</option>
+                    <option value="BSIT-4A">BSIT-4A</option>
+                    <option value="BSIT-4B">BSIT-4B</option>
+                    <option value="BSDC-1A">BSDC-1A</option>
+                    <option value="BSDC-1B">BSDC-1B</option>
+                    <option value="BSDC-2A">BSDC-2A</option>
+                    <option value="BSDC-2B">BSDC-2B</option>
+                    <option value="BSDC-3A">BSDC-3A</option>
+                    <option value="BSDC-3B">BSDC-3B</option>
+                    <option value="BSDC-4A">BSDC-4A</option>
+                    <option value="BSDC-4B">BSDC-4B</option>
+                    <option value="BLIS-1A">BLIS-1A</option>
+                    <option value="BLIS-1B">BLIS-1B</option>
+                    <option value="BLIS-2A">BLIS-2A</option>
+                    <option value="BLIS-2B">BLIS-2B</option>
+                    <option value="BLIS-3A">BLIS-3A</option>
+                    <option value="BLIS-3B">BLIS-3B</option>
+                    <option value="BLIS-4A">BLIS-4A</option>
+                    <option value="BLIS-4B">BLIS-4B</option>
                 </select>
             </div>
 
             <!-- Summary Cards -->
             <div class="summary-cards">
-                <div class="card"><h3>Total Admin</h3><p id="totalAdmin"><?= $counts['admin'] ?></p></div>
-                <div class="card"><h3>Total Teachers</h3><p id="totalTeachers"><?= $counts['teacher'] ?></p></div>
-                <div class="card"><h3>Total Students</h3><p id="totalStudents"><?= $counts['student'] ?></p></div>
-                <div class="card"><h3>Total Users</h3><p id="totalUsers"><?= $counts['total'] ?></p></div>
+                <div class="card"><h3>Total Admin</h3><p id="totalAdmin">0</p></div>
+                <div class="card"><h3>Total Teachers</h3><p id="totalTeachers">0</p></div>
+                <div class="card"><h3>Total Students</h3><p id="totalStudents">0</p></div>
+                <div class="card"><h3>Total Users</h3><p id="totalUsers">0</p></div>
             </div>
 
             <!-- Users Table -->
-
             <div class="table-container">
                 <table id="usersTable">
                     <thead>
@@ -156,39 +189,12 @@ $counts = $controller->roleCount();
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
-                        <?php
-                           
-
-                            foreach($users as $user):
-                                ?>
-                        <tr>
-                            <td><?=htmlspecialchars($user['id'])?></td>
-                            <td><?=htmlspecialchars($user['full_name'])?></td>
-                            <td><?=htmlspecialchars($user['email'])?></td>
-                            <td><?=htmlspecialchars($user['role'])?></td>
-                            <td><?=htmlspecialchars($user['course'] . ' ' . $user['year'] . '-' . $user['section'])?></td>
-                            <td><?=htmlspecialchars($user['status'])?></td>
-                            <td>
-                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=edit" method="post" style="display:inline;">
-                                    <input type="hidden" name="id" value="<?=htmlspecialchars($user['id'])?>">
-                                    <a href="/System/Web-Systems-Finals-Project/BACKEND/Update_page.php?id=<?= htmlspecialchars($user['id']) ?>" class="btn btn-primary">Edit</a>
-
-                                </form>
-                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=delete" method="post" style="display:inline;">
-                                    <input type="hidden" name="id" value="<?=htmlspecialchars($user['id'])?>">
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
-                                    </form>
-                            </td>
-                        </tr>
-                        <?php
-                            endforeach;
-                            ?>
+                        <!-- Populated dynamically -->
                     </tbody>
                 </table>
             </div>
             
 
-            <!-- Add New User Button -->
             <div class="add-user-button-container">
                 <button id="addUserBtn">Add New User</button>
             </div>
@@ -198,13 +204,11 @@ $counts = $controller->roleCount();
         <section id="requestsSection" class="content-section" style="display:none;">
             <h1 class="section-title">Requests</h1>
 
-            <!-- Filter Tabs -->
             <div class="filter-tabs">
                 <button class="request-tab" data-filter="pending">Pending</button>
                 <button class="request-tab" data-filter="finished">Finished</button>
             </div>
 
-            <!-- Requests Table -->
             <div class="table-container">
                 <table id="requestsTable">
                     <thead>
@@ -214,24 +218,44 @@ $counts = $controller->roleCount();
                             <th>Email</th>
                             <th>Status</th>
                             <th>Request Date</th>
-                            <th>Expires In</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="requestsTableBody">
-                        <tr class="no-request">
-                            <td colspan="7">There’s no request</td>
-                        </tr>
+                        <tr class="no-request"><td colspan="6">No requests found</td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
         <!-- MESSAGES SECTION -->
-        <section id="messagesSection" class="content-section" style="display:none;">
-            <h1>Messages</h1>
-            <p>No messages yet.</p>
-        </section>
+        <!-- MESSAGES SECTION -->
+<section id="messagesSection" class="content-section" style="display:none;">
+    <h1 class="section-title">Messages</h1>
+
+    <div class="message-tabs">
+        <button class="message-tab" data-tab="unread">Unread</button>
+        <button class="message-tab" data-tab="read">Read</button>
+    </div>
+
+    <div class="table-container">
+        <table id="messagesTable">
+            <thead>
+                <tr>
+                    <th>Sender</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="messagesTableBody">
+                <tr class="no-message"><td colspan="5">No messages found</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
 
     </main>
 
@@ -246,14 +270,11 @@ $counts = $controller->roleCount();
             </div>
             <div class="modal-body">
                 <label for="newUserId">ID Number</label>
-                <input type="text" name="userId" id="newUserId" readonly>
-
+                <input type="text" name="userId" id="newUserId" value="250001" readonly>
                 <label for="newUserName">Full Name</label>
                 <input type="text" name="fullName" id="newUserName" required>
-
                 <label for="newUserEmail">Email</label>
                 <input type="email" name="email" id="newUserEmail" required>
-
                 <label for="newUserRole">Role</label>
                 <select name="userRole" id="newUserRole" required>
                     <option value="" disabled selected>Select Role</option>
@@ -261,7 +282,6 @@ $counts = $controller->roleCount();
                     <option value="teacher">Teacher</option>
                     <option value="admin">Admin</option>
                 </select>
-
                 <label>Course / Year / Section</label>
                 <div class="horizontal-dropdowns">
                     <select name="course" id="newUserCourse" required>
@@ -289,7 +309,6 @@ $counts = $controller->roleCount();
             </div>
         </div>
     </div>
-</form>
 
     <!-- Change Password Modal -->
     <div class="modal" id="changePasswordModal">
@@ -300,13 +319,11 @@ $counts = $controller->roleCount();
             </div>
             <div class="modal-body">
                 <label for="oldPassword">Old Password</label>
-                <input type="password" name="oldPassword" id="oldPassword" required>
-
+                <input type="password" id="oldPassword" required>
                 <label for="newPassword">New Password</label>
-                <input type="password" name="newPassword" id="newPassword" required>
-
+                <input type="password" id="newPassword" required>
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword" required>
+                <input type="password" id="confirmPassword" required>
             </div>
             <div class="modal-footer">
                 <button type="submit">Save Changes</button>
@@ -314,9 +331,83 @@ $counts = $controller->roleCount();
         </div>
     </div>
 
+    <!-- View Message Modal (with reply feature) -->
+    <div class="modal" id="viewMessageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="viewMessageSubject">Message Subject</h2>
+                <span class="close-modal" id="closeViewMessage">&times;</span>
+            </div>
+            <div class="modal-body" id="viewMessageBody">
+                <p id="viewMessageContent">Message content will appear here.</p>
+                <hr>
+                <label for="replyMessage">Reply</label>
+                <textarea id="replyMessage" placeholder="Type your reply here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="sendReplyBtn">Send Reply</button>
+                <button id="closeMessageBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CONFIRMATION MODALS ================= -->
+    <!-- Delete User Confirmation -->
+    <div class="modal" id="confirmDeleteUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+                <span class="close-modal" id="closeConfirmDeleteUser">&times;</span>
+            </div>
+            <div class="modal-body" id="viewMessageBody">
+                <label for="viewMessageSubjectInput">Subject</label>
+                <input type="text" id="viewMessageSubjectInput" placeholder="Enter subject" required>
+
+                <label for="viewMessageContent">Message</label>
+                <textarea id="viewMessageContent" placeholder="Message content will appear here..." readonly></textarea>
+
+                <hr>
+                <label for="replyMessage">Reply</label>
+                <textarea id="replyMessage" placeholder="Type your reply here..." required></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Password Confirmation -->
+    <div class="modal" id="confirmResetPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Reset</h2>
+                <span class="close-modal" id="closeConfirmResetPassword">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to reset this user's password?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmResetPasswordBtn">Yes, Reset</button>
+                <button id="cancelResetPasswordBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Message Confirmation -->
+    <div class="modal" id="confirmDeleteMessageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Delete Message</h2>
+                <span class="close-modal" id="closeConfirmDeleteMessage">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this message?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmDeleteMessageBtn">Yes, Delete</button>
+                <button id="cancelDeleteMessageBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= SCRIPTS ================= -->
     <script src="../ASSETS/Admin_Page.js"></script>
-    <script src="../ASSETS/Dashboard_Notifications.js"></script>
 </body>
-
 </html>
