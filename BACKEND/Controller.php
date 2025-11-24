@@ -11,7 +11,7 @@ class Controller{
     public function create_connection(){
         // Server name , User , password, database name
         if(!defined('DB_HOST')){
-            define('DB_HOST', 'localhost');
+            define('DB_HOST', '127.0.0.1');
         }
 
         if(!defined('DB_USER')){
@@ -26,7 +26,7 @@ class Controller{
             define('DB_NAME', 'test');
         }
         //the actual connection
-        $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306);
 
         if($connection->connect_error){
             die("Connection Failed" .$connection->connect_error);
@@ -37,7 +37,7 @@ class Controller{
     }
 
     public function read_all(){
-        $sql="SELECT * FROM users";
+        $sql="SELECT * FROM users ORDER BY role ASC";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
 
@@ -66,20 +66,22 @@ class Controller{
 
     public function update(){
         $id = $_POST['id'];
-        $new_first_name = $_POST['new_first_name'];
-        $new_middle_name = $_POST['new_middle_name'];
-        $new_last_name = $_POST['new_last_name'];
+        $updatedFullName = $_POST['newFullName'];
+        $updatedEmail = $_POST['newEmail'];
+        $updatedRole = $_POST['newRole'];
+        $updatedCourse = $_POST['newCourse'];
+        $updatedYear = $_POST['newYear'];
 
         //if our id is not null
         if($id){
-            $sql = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ? WHERE id = ?";
+            $sql = "UPDATE users SET full_name = ?, email = ?, role = ?, course = ?, year = ?, section = ? WHERE id = ?";
             $stmt = $this->connection->prepare($sql);
 
             if($stmt){
-                $stmt->bind_param("sssi", $new_first_name, $new_middle_name, $new_last_name, $id);
+                $stmt->bind_param("sssssi", $updatedFullName, $updatedEmail, $updatedRole, $updatedCourse, $updatedYear, $id);
 
                 if($stmt->execute()){
-                    $location = "/System/FrontEnd/homepage.php";
+                    $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php";
                     header("Location:$location");
                     exit();
                 }
@@ -102,7 +104,7 @@ class Controller{
         }
         
         $id = $_GET['id'];
-        $location = "/System/BackEnd/Update_Page.php?id=" . urlencode($id);
+        $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php?id=" . urlencode($id);
         header("Location:$location");
         exit();
     }
@@ -127,10 +129,10 @@ class Controller{
     }
 
     public function delete(){
-        $id = $_GET['id'];
+        $id = $_POST['id'];
         echo $id;
 
-        $id = intval($_GET['id']);
+        $id = intval($_POST['id']);
 
         $sql = "DELETE FROM users WHERE id = ?";
         $stmt = $this->connection->prepare($sql);
@@ -139,31 +141,82 @@ class Controller{
          $stmt ->bind_param("i", $id);
 
          if($stmt->execute()){
-            $LOCATION = "/System/FrontEnd/homepage.php";
+            $LOCATION = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php";
             header("Location:$LOCATION");
             exit();
          }
         } 
     }
 
-    public function create(){
-        $first_name = $_POST['first_name'];
-        $middle_name = $_POST['middle_name'];
-        $last_name = $_POST['last_name'];
-
-        //connection and adding
-        //INSERT STATEMENT FORM SQL
-        $sql="INSERT INTO users (last_name, first_name, middle_name) VALUES(?, ?, ?)";
+    //anti-dupe func
+    public function dupeEmail($email) {
+        
+        $sql = "SELECT id FROM users WHERE email = ?";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bind_param("sss", $last_name, $first_name, $middle_name);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+    
+        return $result->num_rows > 0;
+    }
+
+    //display user counts per role+total users
+    public function roleCount() {
+    $sql = "SELECT role, COUNT(*) as total FROM users GROUP BY role";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $counts = [
+        'admin' => 0,
+        'teacher' => 0,
+        'student' => 0,
+        'total' => 0
+    ];
+
+    while($row = $result->fetch_assoc()) {
+        $role = $row['role'];
+        if (isset($counts[$role])) {
+            $counts[$role] = $row['total'];
+        }
+        $counts['total'] += $row['total'];
+    }
+
+    return $counts;
+}
+    
+    public function create(){
+
+        $full_name = $_POST['fullName'];
+        $email = $_POST['email'];
+        $role = $_POST['userRole'];
+        $course = $_POST['course'];
+        $year = $_POST['schoolYear'];
+        $section = $_POST['section'];
+        
+        if($this->dupeEmail($email)){
+            echo "<script>alert('Duplicate Email Found'); window.history.back();</script>";
+        exit();
+    }
+        
+        $sql="INSERT INTO users (full_name, email, role, course, year, section ) VALUES(?, ?, ?, ?, ?, ?)";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("ssssss", $full_name, $email, $role, $course, $year, $section);
 
         if($stmt->execute()){
-            $LOCATION = "/System/FrontEnd/homepage.php";
-            header("Location:$LOCATION?success=1");
+            $location = "/System/Web-Systems-Finals-Project/FRONTEND/Admin_page.php?success=1";
+            header("Location: $location");
             exit();
         }else{
             echo "Error!";
         }
+    }
+    //login page func test
+    //register
+    public function register($idnumber, $email, $password, $role){
+        
+
     }
     
 }
@@ -173,6 +226,6 @@ $controller  = new Controller();
 $controller->actionreader();
 
 
-
+//kasano ag php potang ina 
 
 ?>
