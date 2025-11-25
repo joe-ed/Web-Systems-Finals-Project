@@ -35,8 +35,8 @@ $user_get = $controller->take_info_by_id($_GET['id']);
     <!-- Main Content -->
     <div class="floating-window">
         <h2 class="text-center mb-4">Update User</h2>
-        <form action="/System/BACKEND/Controller.php?method_finder=update" method="post" class="mb-4">
-            <input type="hidden" value="<?=htmlspecialchars($user_get['id'])?>" name="id">
+        <form action="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=update" method="post" class="mb-4">
+            <input type="hidden" value="<?=htmlspecialchars($user_get['id_number'])?>" name="id">
 
             <label for="fullName">Full Name:</label>
             <input type="text" value="<?= htmlspecialchars($user_get['full_name']) ?>"  name="newFullName">
@@ -48,6 +48,8 @@ $user_get = $controller->take_info_by_id($_GET['id']);
             <input type="text" value="<?= htmlspecialchars($user_get['course']) ?>"  name="newCourse">
             <label for="year">Year:</label>
             <input type="text" value="<?= htmlspecialchars($user_get['year']) ?>"  name="newYear">
+            <label for="year">Section:</label>
+            <input type="text" value="<?= htmlspecialchars($user_get['section']) ?>"  name="newSection">
         <button type="submit">Update</button>
     </form>
     

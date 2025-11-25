@@ -3,6 +3,13 @@ include("../BACKEND/Controller.php");
 $controller = new Controller();
 $users = $controller->read_all();
 $counts = $controller->roleCount();
+$roleFilter = $_GET['role'] ?? 'all';
+
+if ($roleFilter === 'all') {
+    $users = $controller->read_all();
+} else {
+    $users = $controller->filter($roleFilter);
+}
 ?>
 
 
@@ -88,22 +95,22 @@ $counts = $controller->roleCount();
             <div class="summary-cards">
                 <div class="card">
                     <h3><i class='bx bxs-user'></i> Total Admin</h3>
-                    <p id="totalAdmin">0</p>
+                    <p id="totalAdmin"><?= $counts['admin'] ?></p>
                     <p class="no-data-msg" style="display:none;">No Admins yet</p>
                 </div>
                 <div class="card">
                     <h3><i class='bx bxs-user-voice'></i> Total Teachers</h3>
-                    <p id="totalTeachers">0</p>
+                    <p id="totalTeachers"><?= $counts['teacher'] ?></p></p>
                     <p class="no-data-msg" style="display:none;">No Teachers yet</p>
                 </div>
                 <div class="card">
                     <h3><i class='bx bxs-graduation'></i> Total Students</h3>
-                    <p id="totalStudents">0</p>
+                    <p id="totalStudents"><?= $counts['student'] ?></p>
                     <p class="no-data-msg" style="display:none;">No Students yet</p>
                 </div>
                 <div class="card">
                     <h3><i class='bx bxs-group'></i> Total Users</h3>
-                    <p id="totalUsers">0</p>
+                    <p id="totalUsers"><?= $counts['total'] ?></p></p>
                     <p class="no-data-msg" style="display:none;">No Users yet</p>
                 </div>
                 <div class="card">
@@ -132,11 +139,12 @@ $counts = $controller->roleCount();
 
             <div class="users-tabs-container">
                 <div class="users-tabs">
-                    <button class="tab-button" data-role="admin">Admin</button>
-                    <button class="tab-button" data-role="teacher">Teacher</button>
-                    <button class="tab-button" data-role="student">Student</button>
+                    <a href="Admin_page.php?role=admin"><button class="tab-button">Admin</button></a>
+                    <a href="Admin_page.php?role=teacher"><button class="tab-button">Teacher</button></a>
+                    <a href="Admin_page.php?role=student"><button class="tab-button">Student</button></a>
+                    <a href="Admin_page.php?role=all"><button class="tab-button">All Users</button></a>
                 </div>
-                <select id="classSectionSelect" disabled>
+                <select id="classSectionSelect" >
                     <option value="all" selected>All Sections</option>
                     <!-- Sections -->
                     <option value="BSIT-1A">BSIT-1A</option>
@@ -168,10 +176,10 @@ $counts = $controller->roleCount();
 
             <!-- Summary Cards -->
             <div class="summary-cards">
-                <div class="card"><h3>Total Admin</h3><p id="totalAdmin">0</p></div>
-                <div class="card"><h3>Total Teachers</h3><p id="totalTeachers">0</p></div>
-                <div class="card"><h3>Total Students</h3><p id="totalStudents">0</p></div>
-                <div class="card"><h3>Total Users</h3><p id="totalUsers">0</p></div>
+                <div class="card"><h3>Total Admin</h3><p id="totalAdmin"><?= $counts['admin'] ?></p></div>
+                <div class="card"><h3>Total Teachers</h3><p id="totalTeachers"><?= $counts['teacher'] ?></p></div>
+                <div class="card"><h3>Total Students</h3><p id="totalStudents"><?= $counts['student'] ?></p></div>
+                <div class="card"><h3>Total Users</h3><p id="totalUsers"><?= $counts['total'] ?></p></div>
             </div>
 
             <!-- Users Table -->
@@ -189,6 +197,33 @@ $counts = $controller->roleCount();
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
+                        <?php
+                           
+
+                            foreach($users as $user):
+                                ?>
+                        <tr>
+                            <td><?=htmlspecialchars($user['id_number'])?></td>
+                            <td><?=htmlspecialchars($user['full_name'])?></td>
+                            <td><?=htmlspecialchars($user['email'])?></td>
+                            <td><?=htmlspecialchars($user['role'])?></td>
+                            <td><?=htmlspecialchars($user['course'] . '  ' . $user['year'] . ' - ' . $user['section'])?></td>
+                            <td></td>
+                            <td>
+                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=edit" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?=htmlspecialchars($user['id_number'])?>">
+                                    <a href="/System/Web-Systems-Finals-Project/BACKEND/Update_page.php?id=<?= htmlspecialchars($user['id_number']) ?>" class="btn btn-primary">Edit</a>
+
+                                </form>
+                                <form action ="/System/Web-Systems-Finals-Project/BACKEND/Controller.php?method_finder=delete" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?=htmlspecialchars($user['id_number'])?>">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                                    </form>
+                            </td>
+                        </tr>
+                        <?php
+                            endforeach;
+                            ?>
                         <!-- Populated dynamically -->
                     </tbody>
                 </table>
@@ -270,11 +305,14 @@ $counts = $controller->roleCount();
             </div>
             <div class="modal-body">
                 <label for="newUserId">ID Number</label>
-                <input type="text" name="userId" id="newUserId" value="250001" readonly>
+                <input type="text" name="userId" id="newUserId" readonly>
+
                 <label for="newUserName">Full Name</label>
                 <input type="text" name="fullName" id="newUserName" required>
+
                 <label for="newUserEmail">Email</label>
                 <input type="email" name="email" id="newUserEmail" required>
+
                 <label for="newUserRole">Role</label>
                 <select name="userRole" id="newUserRole" required>
                     <option value="" disabled selected>Select Role</option>
@@ -282,6 +320,7 @@ $counts = $controller->roleCount();
                     <option value="teacher">Teacher</option>
                     <option value="admin">Admin</option>
                 </select>
+
                 <label>Course / Year / Section</label>
                 <div class="horizontal-dropdowns">
                     <select name="course" id="newUserCourse" required>
@@ -309,48 +348,7 @@ $counts = $controller->roleCount();
             </div>
         </div>
     </div>
-
-    <!-- Change Password Modal -->
-    <div class="modal" id="changePasswordModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Change Your Password</h2>
-                <span class="close-modal" id="closeChangePassword">&times;</span>
-            </div>
-            <div class="modal-body">
-                <label for="oldPassword">Old Password</label>
-                <input type="password" id="oldPassword" required>
-                <label for="newPassword">New Password</label>
-                <input type="password" id="newPassword" required>
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" required>
-            </div>
-            <div class="modal-footer">
-                <button type="submit">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Message Modal (with reply feature) -->
-    <div class="modal" id="viewMessageModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="viewMessageSubject">Message Subject</h2>
-                <span class="close-modal" id="closeViewMessage">&times;</span>
-            </div>
-            <div class="modal-body" id="viewMessageBody">
-                <p id="viewMessageContent">Message content will appear here.</p>
-                <hr>
-                <label for="replyMessage">Reply</label>
-                <textarea id="replyMessage" placeholder="Type your reply here..."></textarea>
-            </div>
-            <div class="modal-footer">
-                <button id="sendReplyBtn">Send Reply</button>
-                <button id="closeMessageBtn">Close</button>
-            </div>
-        </div>
-    </div>
-
+</form>
     <!-- ================= CONFIRMATION MODALS ================= -->
     <!-- Delete User Confirmation -->
     <div class="modal" id="confirmDeleteUserModal">
