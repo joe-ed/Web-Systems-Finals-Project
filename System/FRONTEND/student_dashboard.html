@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - Dorencio Science University</title>
+  <link rel="stylesheet" href="../ASSETS/student_dashboard.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <header>
+    <img src="../ASSETS/Logo.png" alt="Logo" class="logo">
+    <div class="uni">
+      <h3>Dorencio Science University</h3>
+    </div>
+    <nav>
+      <a href="#" class="nav-active">Dashboard</a>
+      <a href="#">Courses</a>
+      <a href="#">Schedule</a>
+    </nav>
+
+    <div class="user-menu">
+      <button type="button" class="user-button">
+        <span class="user-name">John Doe</span>
+        <i class='bx bx-chevron-down'></i>
+      </button>
+      <div class="dropdown-menu">
+        <a href="#"><i class='bx bx-user'></i> Profile</a>
+        <a href="#"><i class='bx bx-cog'></i> Settings</a>
+        <a href="#" id="logout-btn"><i class='bx bx-log-out'></i> Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Fixed video background -->
+  <section class="video-section">
+    <video autoplay muted loop class="bg-video">
+      <source src="../ASSETS/videoplayback.mp4" type="video/mp4">
+      Video Background.
+    </video>
+  </section>
+
+  <!-- Scrollable content area -->
+  <main class="dashboard-container">
+    <!-- Student Info Window -->
+    <div class="floating-window student-info">
+      <div class="window-header">
+        <h2>Student Information</h2>
+      </div>
+      <div class="window-content">
+        <div class="info-item">
+          <span class="info-label">Student ID:</span>
+          <span class="info-value" id="student-id">2023-00123</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Name:</span>
+          <span class="info-value" id="student-name">John Michael Doe</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Program:</span>
+          <span class="info-value" id="student-program">BS Computer Science</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Year Level:</span>
+          <span class="info-value" id="student-year">3rd Year</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Status:</span>
+          <span class="info-value status-active">Active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activities Window -->
+    <div class="floating-window activities">
+      <div class="window-header">
+        <h2>Activities & Grades</h2>
+      </div>
+      <div class="window-content">
+        <div class="activities-list">
+          <!-- Activities will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../ASSETS/student_dashboard.js"></script>
+</body>
+</html>

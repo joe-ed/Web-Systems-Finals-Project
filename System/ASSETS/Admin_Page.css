@@ -1,0 +1,946 @@
+/* ================= Reset & Body ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: all 0.3s ease-in-out;
+}
+
+body {
+    background: linear-gradient(135deg, #111, #222);
+    color: #fff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Body Watermark Logo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25vw;
+    max-width: 400px;
+    height: 25vw;
+    max-height: 400px;
+    background-image: url('../ASSETS/logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.05;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ================= Header ================= */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    background: rgba(20,20,20,0.7);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+}
+
+.center-header-section { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.header-logo-img { 
+    max-height: 80px; 
+}
+
+.right-header-section {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.settings-icon {
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0 0 12px #fff, 0 0 20px #fff;
+    transition: all 0.3s ease;
+}
+
+.settings-icon:hover { 
+    transform: scale(1.1); 
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: rgba(30,30,30,0.8);
+    border: 1px solid #fff;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    min-width: 200px;
+    z-index: 200;
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover { 
+    background: rgba(255,255,255,0.1); 
+    text-shadow: 0 0 12px #fff; 
+}
+
+/* ================= Sidebar ================= */
+.left-sidebar-menu {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 240px;
+    height: calc(100vh - 100px);
+    background: rgba(20,20,20,0.7);
+    backdrop-filter: blur(5px);
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: width 0.35s ease;
+    z-index: 100;
+}
+
+.left-sidebar-menu.collapsed { 
+    width: 70px; 
+}
+
+.sidebar-profile-section { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.sidebar-profile-picture-wrapper { 
+    position: relative; 
+    width: 80px; 
+    height: 80px; 
+    cursor: pointer; 
+}
+
+.profile-picture { 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%; 
+    border: 2px solid #fff; 
+    object-fit: cover; 
+    transition: 0.3s; 
+}
+
+.profile-picture-camera-icon {
+    position: absolute; 
+    bottom: 5px; 
+    right: 5px; 
+    width: 22px; 
+    height: 22px;
+    background: rgba(255,255,255,0.8); 
+    color: #000; 
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 12px;
+    opacity: 0; 
+    transform: scale(0.8); 
+    transition: 0.3s;
+}
+
+.sidebar-profile-picture-wrapper:hover .profile-picture-camera-icon { 
+    opacity: 1; 
+    transform: scale(1); 
+}
+
+.sidebar-profile-name, 
+.sidebar-admin-id { 
+    color: #fff; 
+    font-size: 0.9rem; 
+    text-align: center; 
+}
+
+.left-sidebar-menu.collapsed .sidebar-profile-name,
+.left-sidebar-menu.collapsed .sidebar-admin-id {
+    display: none;
+}
+
+.menu-item { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.nav-link {
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    width: 90%;
+    padding: 10px 12px; 
+    border-radius: 8px;
+    position: relative;
+    color: #ccc;
+    text-decoration: none;
+    transition: all 0.3s ease; 
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.nav-link i { 
+    font-size: 20px; 
+    flex-shrink: 0; 
+}
+
+.nav-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+    transform: scale(1.05);
+}
+
+.nav-link.active {
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 40px #fff, 0 0 60px #fff;
+    transform: scale(1.06);
+    transition: all 0.3s ease;
+}
+
+.link-text { 
+    white-space: nowrap; 
+    transition: opacity 0.2s; 
+}
+
+.left-sidebar-menu.collapsed .link-text { 
+    display: none; 
+}
+
+.sidebar-toggle-button {
+    position: absolute; 
+    top: 50%; 
+    right: -20px; 
+    transform: translateY(-50%);
+    width: 40px; 
+    height: 40px; 
+    background: rgba(255,255,255,0.1); 
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(255,255,255,0.1); 
+    z-index: 101; 
+    transition: all 0.3s;
+}
+
+.sidebar-toggle-button:hover { 
+    background: rgba(255,255,255,0.2); 
+    box-shadow: 0 0 12px rgba(255,255,255,0.3); 
+}
+
+#toggleSidebar i { 
+    transition: transform 0.3s ease; 
+}
+
+#toggleSidebar i.rotated { 
+    transform: rotate(180deg); 
+}
+
+/* ================= Main Content ================= */
+.main-dashboard-content { 
+    margin-left: 240px; 
+    padding: 130px 30px 30px; 
+    transition: margin-left 0.35s ease; 
+}
+
+.main-dashboard-content.sidebar-collapsed { 
+    margin-left: 70px; 
+}
+
+.content-section { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: flex-start; 
+    opacity: 1; 
+    transition: opacity 0.35s; 
+}
+
+/* ================= Section Titles Glow ================= */
+.section-title, 
+.main-dashboard-content h1 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow: 
+        0 0 5px #ffffff, 
+        0 0 10px #ffffff, 
+        0 0 20px #ffffff, 
+        0 0 40px #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+.section-title:hover, 
+.main-dashboard-content h1:hover {
+    text-shadow: 
+        0 0 10px #ffffff, 
+        0 0 20px #00ffff, 
+        0 0 40px #ffffff, 
+        0 0 60px #ffffff;
+}
+
+/* ================= Dashboard Summary Cards (from Version 2) ================= */
+.summary-cards {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dashboard-cards .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 140px;
+    max-width: 180px;
+    padding: 15px 20px;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 10px #fff;
+    transition: all 0.3s;
+    background: rgba(20,20,20,0.5);
+}
+
+.dashboard-cards .card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 0 18px #fff; 
+}
+
+.dashboard-cards .card i {
+    font-size: 28px;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+.dashboard-cards .card h3 {
+    font-size: 0.85rem;
+    margin: 0;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.dashboard-cards .card p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+    color: #fff;
+}
+
+.dashboard-cards .card .no-data-msg {
+    font-size: 0.75rem;
+    color: #888;
+    font-style: italic;
+}
+
+/* Regular Summary Cards (Users Section) */
+.card { 
+    flex: 1 1 120px; 
+    min-width: 120px; 
+    max-width: 150px; 
+    padding: 10px; 
+    border: 2px solid #fff; 
+    border-radius: 12px; 
+    text-align: center; 
+    box-shadow: 0 0 8px #fff; 
+    transition: all 0.3s; 
+    font-size: 0.9rem;
+    background: rgba(20,20,20,0.5);
+}
+
+.card:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 0 15px #fff; 
+}
+
+.card h3 { 
+    margin-bottom: 8px; 
+    font-size: 0.85rem; 
+}
+
+.card p { 
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ================= Dashboard Notifications ================= */
+.dashboard-notifications {
+    width: 100%;
+    max-width: 900px;
+    min-height: 150px;
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.dashboard-notifications .no-notification {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* ================= Search Bar (from Version 2) ================= */
+.search-bar-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.search-bar-container input {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 0.9rem;
+    box-shadow: 0 0 6px #fff;
+    transition: all 0.3s;
+}
+
+.search-bar-container input::placeholder { 
+    color: #ccc; 
+}
+
+.search-bar-container input:focus {
+    box-shadow: 0 0 12px #fff;
+    background: rgba(255,255,255,0.15);
+}
+
+/* ================= Tabs ================= */
+.users-tabs-container, 
+.requests-tabs-container,
+.filter-tabs,
+.message-tabs { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    margin-bottom: 15px; 
+}
+
+.users-tabs, 
+.requests-tabs { 
+    display: flex; 
+    gap: 10px; 
+}
+
+.tab-button, 
+.request-tab,
+.message-tab {
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.12);
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+}
+
+.tab-button.active, 
+.tab-button:hover, 
+.request-tab.active, 
+.request-tab:hover,
+.message-tab.active,
+.message-tab:hover {
+    background: rgba(255,255,255,0.3);
+    box-shadow: 0 0 12px #fff;
+    transform: scale(1.03);
+}
+
+/* ================= Class Section Select ================= */
+#classSectionSelect {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: none;
+    appearance: menulist-button;
+}
+
+#classSectionSelect:hover,
+#classSectionSelect:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 12px #fff;
+    transform: scale(1.03);
+    outline: none;
+}
+
+#classSectionSelect option {
+    background: rgba(30, 30, 30, 0.95);
+    color: #fff;
+}
+
+/* ================= Tables ================= */
+.table-container { 
+    width: 100%;
+    max-width: 1000px;
+    overflow-x: auto; 
+    border-radius: 12px; 
+    margin-bottom: 10px; 
+    display: flex; 
+    justify-content: center; 
+}
+
+#usersTable, 
+#requestsTable,
+#messagesTable {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    background: rgba(20, 20, 20, 0.7);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#usersTable th, 
+#usersTable td, 
+#requestsTable th, 
+#requestsTable td,
+#messagesTable th,
+#messagesTable td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#usersTable th, 
+#requestsTable th,
+#messagesTable th {
+    background: rgba(255,255,255,0.1);
+    text-shadow: 0 0 6px #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+#usersTable td, 
+#requestsTable td,
+#messagesTable td {
+    background: rgba(20,20,20,0.6);
+    text-shadow: 0 0 4px #fff;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+#usersTable tr:hover td, 
+#requestsTable tr:hover td,
+#messagesTable tr:hover td { 
+    background: rgba(255,255,255,0.05); 
+}
+
+/* No data rows */
+.no-user td,
+.no-request td,
+.no-message td {
+    text-align: center !important;
+    font-style: italic;
+    color: #ccc;
+    padding: 20px !important;
+}
+
+/* ================= Status in Table ================= */
+.status.active { 
+    color: #0f0; 
+}
+
+.status.inactive { 
+    color: #f00; 
+}
+
+/* ================= Table Buttons ================= */
+.table-btn, 
+.reset-btn,
+.edit-btn,
+.delete-btn,
+.view-btn {
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    text-shadow: 0 0 6px #fff;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.table-btn:hover, 
+.reset-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover,
+.view-btn:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 0 10px #fff; 
+}
+
+.edit-btn {
+    background: rgba(0, 150, 255, 0.3);
+}
+
+.edit-btn:hover {
+    background: rgba(0, 150, 255, 0.6);
+}
+
+.delete-btn {
+    background: rgba(255, 50, 50, 0.3);
+}
+
+.delete-btn:hover {
+    background: rgba(255, 50, 50, 0.6);
+}
+
+.reset-btn {
+    background: rgba(255, 200, 0, 0.3);
+}
+
+.reset-btn:hover {
+    background: rgba(255, 200, 0, 0.6);
+}
+
+.reset-btn.resetted { 
+    background: rgba(40,167,69,0.8); 
+    cursor: default; 
+}
+
+.view-btn {
+    background: rgba(0, 200, 100, 0.3);
+}
+
+.view-btn:hover {
+    background: rgba(0, 200, 100, 0.6);
+}
+
+/* ================= Add User Button ================= */
+.add-user-button-container { 
+    width: 100%;
+    max-width: 1000px;
+    display: flex; 
+    justify-content: flex-end; 
+    margin: 10px 0 30px 0; 
+}
+
+#addUserBtn {
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0 0 6px #fff;
+    transition: all 0.3s ease;
+}
+
+#addUserBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 12px #fff, 0 0 18px #fff;
+    transform: scale(1.05);
+}
+
+/* ================= Modal Overlay ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 250;
+    display: none;
+}
+
+/* ================= Modals ================= */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 400px;
+    max-width: 90%;
+    background: rgba(30,30,30,0.95);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 300;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal.shake { 
+    animation: shake 0.3s; 
+}
+
+.modal-header, 
+.modal-body, 
+.modal-footer { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+.modal-header { 
+    justify-content: center; 
+    align-items: center; 
+    position: relative;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.modal-header h2 { 
+    margin: 0; 
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 0 8px #fff;
+}
+
+.modal-header .close-modal { 
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    font-size: 1.5rem; 
+    cursor: pointer; 
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.modal-header .close-modal:hover {
+    text-shadow: 0 0 12px #fff, 0 0 25px #fff;
+    transform: scale(1.15);
+}
+
+.modal-body label { 
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #ddd;
+}
+
+.modal-body input, 
+.modal-body select { 
+    padding: 8px 12px; 
+    border-radius: 8px; 
+    border: 1px solid rgba(255,255,255,0.3); 
+    background: rgba(50,50,50,0.85); 
+    color: #fff;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.modal-body input:focus,
+.modal-body select:focus {
+    outline: none;
+    border-color: #fff;
+    box-shadow: 0 0 8px #fff;
+}
+
+.modal-footer { 
+    justify-content: center; 
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.modal-footer button { 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    border: none; 
+    background: rgba(255,255,255,0.15); 
+    color: #fff; 
+    cursor: pointer; 
+    text-shadow: 0 0 6px #fff; 
+    transition: all 0.3s; 
+    align-self: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.modal-footer button:hover { 
+    transform: scale(1.05); 
+    box-shadow: 0 0 12px #fff; 
+}
+
+/* Horizontal Dropdowns */
+.horizontal-dropdowns {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.horizontal-dropdowns select {
+    flex: 1;
+    height: 36px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(50,50,50,0.85);
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.horizontal-dropdowns select:focus {
+    outline: none;
+    border-color: #fff;
+    box-shadow: 0 0 8px #fff;
+}
+
+/* ================= Responsive ================= */
+@media screen and (max-width: 1024px) { 
+    .main-dashboard-content { 
+        padding: 120px 20px 20px; 
+    } 
+}
+
+@media screen and (max-width: 768px) {
+    .left-sidebar-menu { 
+        width: 180px; 
+    }
+    
+    .left-sidebar-menu.collapsed { 
+        width: 60px; 
+    }
+    
+    .main-dashboard-content { 
+        margin-left: 180px; 
+        padding: 120px 15px 15px; 
+    }
+    
+    .card { 
+        min-width: 100px; 
+        max-width: 120px; 
+    }
+    
+    .dashboard-cards .card {
+        min-width: 120px;
+        max-width: 140px;
+    }
+    
+    .search-bar-container input {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .left-sidebar-menu { 
+        width: 140px; 
+    }
+    
+    .left-sidebar-menu.collapsed { 
+        width: 50px; 
+    }
+    
+    .main-dashboard-content { 
+        margin-left: 140px; 
+        padding: 110px 10px 10px; 
+    }
+    
+    .card { 
+        min-width: 80px; 
+        max-width: 100px; 
+    }
+    
+    .dashboard-cards .card {
+        min-width: 100px;
+        max-width: 120px;
+    }
+    
+    .users-tabs-container, 
+    .filter-tabs,
+    .message-tabs { 
+        flex-direction: column; 
+        gap: 5px; 
+    }
+    
+    .horizontal-dropdowns {
+        flex-direction: column;
+    }
+}
+
+/* ================= Shake Animation ================= */
+@keyframes shake {
+    0% { transform: translate(-50%, -50%) translateX(0); }
+    25% { transform: translate(-50%, -50%) translateX(-10px); }
+    50% { transform: translate(-50%, -50%) translateX(10px); }
+    75% { transform: translate(-50%, -50%) translateX(-10px); }
+    100% { transform: translate(-50%, -50%) translateX(0); }
+}
