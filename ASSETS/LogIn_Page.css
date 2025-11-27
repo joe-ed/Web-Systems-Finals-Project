@@ -1,0 +1,281 @@
+/* ================= Basic Reset ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ================= Header ================= */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(5px);
+  padding: 0 5%;
+  z-index: 99;
+}
+
+header .logo {
+  position: absolute;
+  left: 5%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+}
+
+header nav a {
+  color: #fff;
+  margin-left: 30px;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  text-shadow: 0 0 6px #fff, 0 0 12px #fff;
+}
+
+header nav a:hover {
+  text-shadow: 0 0 14px #fff, 0 0 28px #fff;
+}
+
+header nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+header nav a:hover::after {
+  width: 100%;
+  box-shadow: 0 0 12px #fff, 0 0 24px #fff;
+}
+
+header .login-button {
+  padding: 6px 18px;
+  margin-left: 30px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+}
+
+header .login-button:hover {
+  box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+}
+
+/* ================= Modal ================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+  z-index: 100;
+}
+
+.modal.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ================= Modal Content ================= */
+.modal-content {
+  background: rgba(20, 20, 20, 0.95);
+  border-radius: 20px;
+  width: 440px;
+  max-width: 95%;
+  padding: 40px 35px;
+  box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border: 2px solid transparent;
+  animation: glowBorder 2.5s infinite alternate;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, height 0.4s ease-in-out;
+}
+
+.modal.active .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Glow animation for modal border */
+@keyframes glowBorder {
+  0%, 100% {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+    border-color: #fff;
+  }
+  50% {
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 50px #fff;
+    border-color: #fff;
+  }
+}
+
+/* ================= Close Button ================= */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.4rem;
+  color: #fff;
+  cursor: pointer;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.close-btn:hover {
+  text-shadow: 0 0 20px #fff, 0 0 40px #fff;
+}
+
+/* ================= Modal Views ================= */
+.modal-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-view.active {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ================= Titles ================= */
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 0 0 8px #fff, 0 0 16px #fff, 0 0 20px #fff;
+  font-size: 1.4rem;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ================= Inputs & Selects ================= */
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  outline: none;
+  box-shadow: 0 0 6px #fff, 0 0 12px #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-content input::placeholder,
+.modal-content select {
+  color: #ddd;
+  text-shadow: 0 0 4px #fff;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: #fff;
+  box-shadow: 0 0 12px #fff, 0 0 20px #fff;
+}
+
+/* ================= Buttons ================= */
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-content button:hover {
+  box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+  transform: translateY(-2px);
+}
+
+/* Disabled button style */
+button.disabled {
+  background: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================= Links ================= */
+.modal-content a {
+  color: #fff;
+  display: block;
+  margin: 10px 0;
+  text-decoration: none;
+  font-weight: 500;
+  text-shadow: 0 0 6px #fff, 0 0 12px #fff;
+  cursor: pointer;
+}
+
+.modal-content a:hover {
+  text-shadow: 0 0 14px #fff, 0 0 28px #fff;
+}
+
+/* ================= Countdown ================= */
+#countdown {
+  font-weight: 600;
+  color: #fff;
+  margin: 5px 0;
+  text-align: center;
+}
+
+/* ================= Submit Code Container ================= */
+#submitCodeContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* ================= Modal Auto Height ================= */
+#loginView,
+#forgotView,
+#resetView {
+  height: auto; /* height grows with content */
+}
